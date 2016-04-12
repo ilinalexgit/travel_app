@@ -1,0 +1,9 @@
+{
+  "name": "app",
+  "description": "Travel app",
+  "main": "app.js",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true
+}

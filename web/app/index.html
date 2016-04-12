@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html ng-app="travelApp">
+<head>
+    <base href="/app/" />
+    <title>test</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+
+<div ng-include="'templates/header.html'"></div>
+
+<div ui-view></div>
+
+<div ng-include="'templates/footer.html'"></div>
+
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="bower_components/oclazyload/dist/ocLazyLoad.min.js"></script>
+<script src="app.js"></script>
+<script src="router.js"></script>
+
+<!--<script src="controllers/LoginCtrl.js"></script>-->
+<script src="controllers/SignupCtrl.js"></script>
+
+</body>
+</html>
