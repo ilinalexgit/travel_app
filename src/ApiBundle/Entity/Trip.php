@@ -52,6 +52,12 @@ class Trip
      */
     protected $description;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="ApiBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
 
 
     /**
@@ -206,5 +212,29 @@ class Trip
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \ApiBundle\Entity\User $user
+     *
+     * @return Trip
+     */
+    public function setUser(\ApiBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \ApiBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

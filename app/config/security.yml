@@ -42,6 +42,8 @@ security:
                 success_handler:          lexik_jwt_authentication.handler.authentication_success
                 failure_handler:          lexik_jwt_authentication.handler.authentication_failure
                 require_previous_session: false
+                username_parameter: username
+                password_parameter: password
 
         register:
             pattern:  ^/api/register

@@ -7,33 +7,35 @@
 
             <div class="panel-body" >
 
-                <form name="form" id="form" class="form-horizontal" enctype="multipart/form-data" method="POST">
+                <div class="alert alert-danger" ng-show="error_messages" ng-repeat="error_message in error_messages">{{error_message}}</div>
+                <div class="alert alert-success" ng-show="success_message">{{success_message}}</div>
+                <div class="alert alert-danger" ng-show="form.$submitted && !form.$valid">
+                    <div ng-show="form.user.$error.required">User filed is required.</div>
+                    <div ng-show="form.email.$error.required">Email filed is required.</div>
+                    <div ng-show="form.email.$error.email">This is not a valid email.</div>
+                    <div ng-show="form.password.$error.required">Password filed is required.</div>
+                </div>
 
+                <form name="form" class="form-horizontal" enctype="multipart/form-data" method="POST" novalidate>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input id="user" type="text" class="form-control" name="user" value="" placeholder="User">
+                        <input type="text" class="form-control" ng-model="credentials.username" name="user" value="" placeholder="User" required="" />
                     </div>
 
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                        <input id="email" type="text" class="form-control" name="email" value="" placeholder="Email">
+                        <input type="email" class="form-control" ng-model="credentials.email" name="email" value="" placeholder="Email" required="" />
                     </div>
 
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        <input id="password" type="password" class="form-control" name="password" placeholder="Password">
-                    </div>
-
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        <input id="confirm_password" type="password" class="form-control" name="confirm_password" placeholder="Confirm password">
+                        <input type="password" class="form-control" ng-model="credentials.password" name="password" value="" placeholder="Password" required="" />
                     </div>
 
                     <div class="login-form-bttn-group">
-                        <button type="submit" href="#" class="btn btn-primary pull-right sign-up-bttn">Sign Up</button>
+                        <button type="submit" href="#" class="btn btn-primary pull-right sign-up-bttn" ng-click="submit(credentials)">Sign Up</button>
                         <button type="submit" ui-sref="login" class="btn btn-danger pull-right log-in-bttn">Cancel</button>
                     </div>
-
                 </form>
 
             </div>

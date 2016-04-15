@@ -7,20 +7,27 @@
 
             <div class="panel-body" >
 
-                <form name="form" id="form" class="form-horizontal" enctype="multipart/form-data" method="POST">
+                <form name="form" id="form" class="form-horizontal" enctype="multipart/form-data" method="POST" novalidate>
+
+                    <div class="alert alert-danger" ng-show="error_message">{{error_message}}</div>
+
+                    <div class="alert alert-danger" ng-show="form.$submitted && !form.$valid">
+                        <div ng-show="form.user.$error.required">User filed is required.</div>
+                        <div ng-show="form.password.$error.required">Password filed is required.</div>
+                    </div>
 
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input id="user" type="text" class="form-control" name="user" value="" placeholder="User">
+                        <input id="user" type="text" class="form-control" name="user" ng-model="credentials.username" value="" placeholder="User" required="">
                     </div>
 
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        <input id="password" type="password" class="form-control" name="password" placeholder="Password">
+                        <input id="password" type="password" class="form-control" name="password" ng-model="credentials.password" placeholder="Password" required="">
                     </div>
 
                     <div class="login-form-bttn-group">
-                        <button type="submit" href="#" class="btn btn-primary pull-right log-in-bttn"><i class="glyphicon glyphicon-log-in"></i> Log In</button>
+                        <button type="submit" href="#" class="btn btn-primary pull-right log-in-bttn" ng-click="submit(credentials)"><i class="glyphicon glyphicon-log-in"></i> Log In</button>
                         <button type="submit" ui-sref="signup" class="btn btn-success pull-right sign-up-bttn">Sign Up</button>
                     </div>
 

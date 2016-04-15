@@ -10,52 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Constraints\Email;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApiController extends Controller
 {
-    /**
-     * @Route("/")
-     */
-    public function indexAction()
-    {
-        return $this->render('ApiBundle:Default:index.html.twig');
-    }
-
-    /**
-     * @Route("/register", name="user_registration")
-     */
-    public function registerAction(Request $request)
-    {
-        $responseArr = array();
-
-        $user = new User();
-        $user->setUsername($request->get('username', NULL));
-        $user->setPlainPassword($request->get('password', NULL));
-        $user->setEmail($request->get('email', NULL));
-
-        $validator = $this->get('validator');
-        $errors = $validator->validate($user);
-
-        if (count($errors) > 0) {
-            $responseArr['success'] = false;
-            $responseArr['errors'][] = $this->getErrorsTextsArray($errors);
-        }else{
-            $password = $this->get('security.password_encoder')
-                ->encodePassword($user, $user->getPlainPassword());
-            $user->setPassword($password);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-            $responseArr['success'] = true;
-        }
-
-        $response = new JsonResponse();
-        $response->setData($responseArr);
-
-        return $response;
-    }
-
     /**
      * @Route("/trips/{id}", name="trip_show")
      * @Method({"GET"})
@@ -197,7 +155,7 @@ class ApiController extends Controller
         var_dump("trips show GET");die;
     }
 
-    protected function getErrorsTextsArray($errors){
+    static function getErrorsTextsArray($errors){
         $result = array();
         foreach ($errors as $key => $error) {
             $result[] = $error->getPropertyPath() .': '. $error->getMessage();

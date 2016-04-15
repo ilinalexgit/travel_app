@@ -4,10 +4,13 @@ namespace ApiBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as UniqueEntity;
 
 /**
  * @ORM\Table(name="app_users")
  * @ORM\Entity(repositoryClass="ApiBundle\Entity\UserRepository")
+ * @UniqueEntity("email")
+ * @UniqueEntity("username")
  */
 class User implements UserInterface, \Serializable
 {
@@ -47,6 +50,11 @@ class User implements UserInterface, \Serializable
      */
     private $isActive;
 
+    /**
+     * @ORM\Column(name="roles", type="string", length=256)
+     */
+    private $roles;
+
     public function __construct()
     {
         $this->isActive = true;
@@ -73,7 +81,7 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return unserialize($this->roles);
     }
 
     public function eraseCredentials()
@@ -199,5 +207,28 @@ class User implements UserInterface, \Serializable
     public function setPlainPassword($password)
     {
         $this->plainPassword = $password;
+    }
+
+    /**
+     * Set roles
+     *
+     * @param string $roles
+     *
+     * @return User
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = serialize($roles);
+
+        return $this;
+    }
+
+    public function getUserAsArray(){
+        $arr = array();
+        $arr['id'] = $this->getId();
+        $arr['username'] = $this->getUsername();
+        $arr['email'] = $this->getEmail();
+        $arr['roles'] = $this->getRoles();
+        return $arr;
     }
 }
