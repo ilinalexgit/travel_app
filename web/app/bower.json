@@ -5,5 +5,11 @@
   "moduleType": [],
   "license": "MIT",
   "homepage": "",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "angular": "^1.5.4",
+    "angular-ui-router": "^0.2.18",
+    "bootstrap": "^3.3.6",
+    "oclazyload": "^1.0.9"
+  }
 }

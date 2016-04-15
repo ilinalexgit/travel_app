@@ -152,7 +152,13 @@ class ApiController extends Controller
      */
     public function tripsShowAction(Request $request)
     {
-        var_dump("trips show GET");die;
+        $doctrine = $this->getDoctrine();
+        $user = $this->getUser();
+        $trips   = $doctrine->getRepository('ApiBundle:Trip')->fileterByRequest($request, $user->getId());
+
+        $response = new JsonResponse();
+        $response->setData($trips);
+        return $response;
     }
 
     static function getErrorsTextsArray($errors){

@@ -8,11 +8,13 @@ angular
             .state('home', {
                 url: "/",
                 resolve: {
-                    loadTravels:['TravelService', function(TravelService){
+                    loadTravels:['TravelService', 'loadHomeCtrl', function(TravelService, loadHomeCtrl){
+                        console.log('load travels relsolve');
                         return TravelService.getTravels();
                     }],
 
                     loadHomeCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                        console.log('load home controller file');
                         return $ocLazyLoad.load('controllers/HomeCtrl.js');
                     }]
                 },

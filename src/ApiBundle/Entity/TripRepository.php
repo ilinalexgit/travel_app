@@ -2,6 +2,7 @@
 
 namespace ApiBundle\Entity;
 
+use Symfony\Component\HttpFoundation\Request;
 /**
  * TripRepository
  *
@@ -10,4 +11,23 @@ namespace ApiBundle\Entity;
  */
 class TripRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function fileterByRequest(Request $request, $user_id)
+    {
+        $start   = $request->get('start', 0);
+        $length    = $request->get('length', 20);
+        $order_field    = $request->get('order_field', 'start_dt');
+        $order_dir    = $request->get('order_dir', 'ASC');
+
+        $qb = $this
+            ->createQueryBuilder('trip')
+            ->select(['trip.id', 'trip.start_dt', 'trip.end_dt', 'trip.end_dt', 'trip.created_dt', 'trip.destination', 'trip.departure', 'trip.description'])
+            ->Join('trip.user', 'user')
+            ->where('user.id = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->orderBy('trip.'.$order_field, $order_dir)
+            ->setMaxResults($length)
+            ->setFirstResult($start);
+
+        return $qb->getQuery()->getResult();
+    }
 }
