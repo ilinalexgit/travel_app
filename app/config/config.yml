@@ -58,7 +58,11 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
+        auto_mapping: true+
+
+        dql:
+            string_functions:
+              unix_timestamp: ApiBundle\DQL\UnixTimestamp
 
 # Swiftmailer Configuration
 swiftmailer:

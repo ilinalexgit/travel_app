@@ -6,16 +6,35 @@ angular
         function ($rootScope, $http, $httpParamSerializerJQLike) {
             return {
                 getTravels: function(params){
+                    console.log(params);
                     return $http({
                         url: '/api/trips',
                         method: "GET",
-                        data: $httpParamSerializerJQLike(params),
+                        params: (params)
+                    });
+                },
+                createTravel: function(item){
+                    return $http({
+                        url: '/api/trips',
+                        method: "POST",
+                        data: $httpParamSerializerJQLike(item),
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     });
                 },
-                createTravels: function(){},
-                deleteTravels: function(){},
-                editTravels: function(){}
+                deleteTravel: function(id){
+                    return $http({
+                        url: '/api/trips/'+id,
+                        method: "DELETE"
+                    });
+                },
+                editTravel: function(item, id){
+                    return $http({
+                        url: '/api/trips/'+id,
+                        method: "PUT",
+                        data: $httpParamSerializerJQLike(item),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    });
+                }
             };
         }
     ]);

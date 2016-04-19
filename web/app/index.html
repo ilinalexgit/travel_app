@@ -4,6 +4,7 @@
     <base href="/app/" />
     <title>test</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
     <link rel="stylesheet" href="css/custom.css">
 </head>
 <body>
@@ -14,15 +15,22 @@
 
 <div ng-include="'templates/footer.html'"></div>
 
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script src="bower_components/oclazyload/dist/ocLazyLoad.min.js"></script>
+<script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
+<script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap-tpls.min.js"></script>
 
 <script src="app.js"></script>
 <script src="router.js"></script>
 <script src="services/AuthService.js"></script>
 <script src="services/UserService.js"></script>
 <script src="services/TravelService.js"></script>
+<script src="services/TravelListService.js"></script>
+
+<script src="directives/Sort.js"></script>
 
 
 </body>

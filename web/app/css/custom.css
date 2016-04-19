@@ -5,3 +5,35 @@
 .sign-up-bttn{
     margin-right: 5px;
 }
+
+.score{
+    background-color: green;
+    height: 100%;
+    margin-bottom: 5px;
+    padding-top:20px;
+    padding-bottom:20px;
+}
+
+.table_header{
+    position:fixed;
+    width: inherit;
+    background-color: yellow;
+    z-index: 1;
+}
+
+.table_header_row{
+
+}
+
+.travel_list_container{
+    margin-top:50px;
+    z-index: 2;
+}
+
+.description_text{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: none;
+    color:black;
+}

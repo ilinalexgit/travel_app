@@ -16,7 +16,8 @@ class TripRepository extends \Doctrine\ORM\EntityRepository
         $start   = $request->get('start', 0);
         $length    = $request->get('length', 20);
         $order_field    = $request->get('order_field', 'start_dt');
-        $order_dir    = $request->get('order_dir', 'ASC');
+        $order_dir    = $request->get('order_dir', 'DESC');
+        $search = $request->get('search', false);
 
         $qb = $this
             ->createQueryBuilder('trip')
@@ -27,6 +28,13 @@ class TripRepository extends \Doctrine\ORM\EntityRepository
             ->orderBy('trip.'.$order_field, $order_dir)
             ->setMaxResults($length)
             ->setFirstResult($start);
+
+        if ($search){
+            $qb //'%$keyword%'
+                ->andWhere('trip.destination LIKE :destination')
+                ->setParameter('destination', '%'.$search.'%');
+        }
+        //dump($qb->getQuery()->getSQL());die;
 
         return $qb->getQuery()->getResult();
     }

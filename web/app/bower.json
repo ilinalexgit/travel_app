@@ -10,6 +10,8 @@
     "angular": "^1.5.4",
     "angular-ui-router": "^0.2.18",
     "bootstrap": "^3.3.6",
-    "oclazyload": "^1.0.9"
+    "oclazyload": "^1.0.9",
+    "ngInfiniteScroll": "1.0.0",
+    "angular-xeditable": "^0.1.12"
   }
 }

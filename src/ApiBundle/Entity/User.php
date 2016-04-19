@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Table(name="app_users")
@@ -55,9 +56,15 @@ class User implements UserInterface, \Serializable
      */
     private $roles;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Trip", mappedBy="user")
+     */
+    private $trips;
+
     public function __construct()
     {
         $this->isActive = true;
+        $this->products = new ArrayCollection();
         // may not be needed, see section on salt below
         // $this->salt = md5(uniqid(null, true));
     }
@@ -230,5 +237,39 @@ class User implements UserInterface, \Serializable
         $arr['email'] = $this->getEmail();
         $arr['roles'] = $this->getRoles();
         return $arr;
+    }
+
+    /**
+     * Add trip
+     *
+     * @param \ApiBundle\Entity\Trip $trip
+     *
+     * @return User
+     */
+    public function addTrip(\ApiBundle\Entity\Trip $trip)
+    {
+        $this->trips[] = $trip;
+
+        return $this;
+    }
+
+    /**
+     * Remove trip
+     *
+     * @param \ApiBundle\Entity\Trip $trip
+     */
+    public function removeTrip(\ApiBundle\Entity\Trip $trip)
+    {
+        $this->trips->removeElement($trip);
+    }
+
+    /**
+     * Get trips
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTrips()
+    {
+        return $this->trips;
     }
 }

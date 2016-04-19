@@ -1,6 +1,6 @@
 var travelApp =
     angular
-        .module('travelApp', ['ui.router', 'oc.lazyLoad'])
+        .module('travelApp', ['ui.router', 'oc.lazyLoad', 'infinite-scroll', 'travelApp.sort', 'xeditable', 'ui.bootstrap'])
             .factory('myHttpInterceptor', ['$q', '$location', '$window', '$injector', function($q, $location, $window, $injector) {
 
                 return {
@@ -37,9 +37,10 @@ var travelApp =
                     $httpProvider.interceptors.push('myHttpInterceptor');
             }])
 
-            .run(['$rootScope', '$location', '$http', 'AuthService', 'UserService', '$ocLazyLoad',
-                function($rootScope, $location, $http, AuthService, UserService, $ocLazyLoad){
+            .run(['$rootScope', '$location', '$http', 'AuthService', 'UserService', '$ocLazyLoad', 'editableOptions',
+                function($rootScope, $location, $http, AuthService, UserService, $ocLazyLoad, editableOptions){
                     console.log('run');
+                    editableOptions.theme = 'bs3';
                     if (AuthService.isLogin()){
                         $http.defaults.headers.common.Authorization = 'Bearer ' + AuthService.isLogin();
                     }
@@ -66,3 +67,5 @@ var travelApp =
 
                     });
             }]);
+
+angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 500);

@@ -53,7 +53,7 @@ class Trip
     protected $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ApiBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="ApiBundle\Entity\User", inversedBy="trips")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;

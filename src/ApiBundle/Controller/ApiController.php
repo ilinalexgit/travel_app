@@ -52,32 +52,39 @@ class ApiController extends Controller
         if (!$trip) {
             $responseArr['success'] = false;
             $responseArr['errors'] = 'Unable to find trip.';
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
         }else{
-            if ($request->get('start_dt', NULL)){
-                $start_dt = $this->getValidDateObject($request->get('start_dt', NULL));
+            if ($request->get('start_dt', NULL) && isset($request->get('start_dt', NULL)['date'])){
+                $start_dt = $this->getValidDateObject($request->get('start_dt', NULL)['date']);
                 $trip->setStartDt($start_dt);
             }
 
-            if ($request->get('end_dt', NULL)){
-                $end_dt = $this->getValidDateObject($request->get('end_dt', NULL));
+            if ($request->get('end_dt', NULL) && isset($request->get('end_dt', NULL)['date'])){
+                $end_dt = $this->getValidDateObject($request->get('end_dt', NULL)['date']);
                 $trip->setEndDt($end_dt);
             }
 
             if ($request->get('description', NULL)){
-                $trip->setStartDt($request->get('description', NULL));
-            }
-
-            if ($request->get('departure', NULL)){
-                $trip->setStartDt($request->get('departure', NULL));
+                $trip->setDescription($request->get('description', NULL));
             }
 
             if ($request->get('destination', NULL)){
-                $trip->setStartDt($request->get('destination', NULL));
+                $trip->setDestination($request->get('destination', NULL));
             }
 
-            $em->persist($trip);
-            $em->flush();
-            $responseArr['success'] = true;
+            $validator = $this->get('validator');
+            $errors = $validator->validate($trip);
+
+            if (count($errors) > 0) {
+                $responseArr['success'] = false;
+                $responseArr['errors'] = $this->getErrorsTextsArray($errors);
+                $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+            }else{
+                $em->persist($trip);
+                $em->flush();
+
+                $responseArr['success'] = true;
+            }
         }
 
         $response->setData($responseArr);
@@ -115,9 +122,10 @@ class ApiController extends Controller
         $responseArr = array();
         $responseArr['errors'] = array();
         $response = new JsonResponse();
+        $user = $this->getUser();
 
-        $start_dt = $this->getValidDateObject($request->get('start_dt', NULL));
-        $end_dt = $this->getValidDateObject($request->get('end_dt', NULL));
+        $start_dt = $this->getValidDateObject($request->get('start_dt', NULL)['date']);
+        $end_dt = $this->getValidDateObject($request->get('end_dt', NULL)['date']);
 
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
@@ -128,6 +136,7 @@ class ApiController extends Controller
         $trip->setEndDt($end_dt);
         $trip->setStartDt($start_dt);
         $trip->setCreatedDt($now);
+        $trip->setUser($user);
 
         $validator = $this->get('validator');
         $errors = $validator->validate($trip);
@@ -135,6 +144,7 @@ class ApiController extends Controller
         if (count($errors) > 0) {
             $responseArr['success'] = false;
             $responseArr['errors'] = $this->getErrorsTextsArray($errors);
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
         }else{
             $em = $this->getDoctrine()->getManager();
             $em->persist($trip);

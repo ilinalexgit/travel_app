@@ -1,5 +1,127 @@
 <div>
-    <button type="submit" href="#" class="btn btn-primary pull-right log-in-bttn" ng-click="logout()">Log Out</button>
-    <button type="submit" href="#" class="btn btn-primary pull-right log-in-bttn" ng-click="test()">Go to login</button>
-    <button type="submit" href="#" class="btn btn-primary pull-right log-in-bttn" ng-click="test2()">Go to admin</button>
+    <div>
+        <button type="submit" href="#" class="btn btn-primary pull-right log-in-bttn" ng-click="logout()">Log Out</button>
+        <button type="submit" href="#" class="btn btn-primary pull-right log-in-bttn" ng-click="test()">Go to login</button>
+        <button type="submit" href="#" class="btn btn-primary pull-right log-in-bttn" ng-click="test2()">Go to admin</button>
+    </div>
+    <div style="clear: both"></div>
+    <div class="container">
+
+        <div>
+            <button class="btn btn-default" ng-click="addNewtrip()">Add row</button>
+            <button class="btn btn-default" ng-click="showFilters = ! showFilters">Filters</button>
+            <div class="pull-right">
+                <input class="form-control" type="text" placeholder="Search" ng-model="searchStr" ng-change="search()" />
+            </div>
+        </div>
+
+        <div class="filters" ng-show="showFilters">
+
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="checkbox" ng-model="filters.date_filter.check" ng-change="applyFilters()" />
+                </div>
+                <div class="col-md-3">Date</div>
+                <div class="col-md-3">
+                    <select class="form-control">
+                        <option selected>is</option>
+                        <option>later</option>
+                        <option>earlier</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="filter_date" is-open="filter_date_popup.opened" datepicker-options="dateOptions" ng-required="true"/>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="filter_date_popup_open()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="checkbox" ng-model="filters.start_dt_filter.check" ng-change="applyFilters()" />
+                </div>
+                <div class="col-md-3">Start Date</div>
+                <div class="col-md-3">
+                    <select class="form-control">
+                        <option selected>is</option>
+                        <option>later</option>
+                        <option>earlier</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="filter_start_dt" is-open="filter_start_dt_popup.opened" datepicker-options="dateOptions" ng-required="true"/>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="filter_start_dt_popup_open()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="checkbox" ng-model="filters.end_dt_filter.check" ng-change="applyFilters()" />
+                </div>
+                <div class="col-md-3">End Date</div>
+                <div class="col-md-3">
+                    <select class="form-control">
+                        <option selected>is</option>
+                        <option>later</option>
+                        <option>earlier</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="filter_end_dt" is-open="filter_end_dt_popup.opened" datepicker-options="dateOptions" ng-required="true"/>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="filter_end_dt_popup_open()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="table_header row" ng-show="travel_list.items">
+            <div class="table_header_row col-md-3" sort order="'start_dt_obj'" by="order" reverse="reverse" update-method="sortList">Start Date</div>
+            <div class="table_header_row col-md-3" sort order="'end_dt_obj'" by="order" reverse="reverse" update-method="sortList">End Date</div>
+            <div class="table_header_row col-md-3" sort order="'destination'" by="order" reverse="reverse" update-method="sortList">Start Date</div>
+            <div class="table_header_row col-md-3">Notes</div>
+        </div>
+
+        <div class="travel_list_container" infinite-scroll='travel_list.nextPage()' infinite-scroll-disabled='travel_list.busy' infinite-scroll-distance='0' infinite-scroll-immediate-check="false">
+            <div class="score row" ng-repeat='(key, item) in travel_list.items | orderBy:order:reverse' ng-click="(current_opened_id == item.id) || expand(item, myform)">
+                <div class="col-md-3">
+                    <div buttons="no" e-name="start_dt" editable-bsdate="item.start_dt_obj" e-form="myform" e-is-open="opened1.$data" e-ng-click="open1($event,'$data')" e-datepicker-popup="dd-MMMM-yyyy">
+                        {{ (item.start_dt_obj | date:"dd-MMMM-yyyy") }}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div buttons="no" e-name="end_dt" editable-bsdate="item.end_dt_obj" e-form="myform" e-is-open="opened2.$data" e-ng-click="open2($event,'$data')" e-datepicker-popup="dd-MMMM-yyyy">
+                        {{ (item.end_dt_obj | date:"dd-MMMM-yyyy") }}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div editable-text="item.destination" e-form="myform" e-name="destination">
+                        {{item.destination}}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="description_text" editable-textarea="item.description" e-form="myform" e-name="description" e-rows="7" e-cols="40">
+                        {{item.description}}
+                    </div>
+                </div>
+                <div style="clear: both "></div>
+                <form editable-form name="myform" ng-show="myform.$visible" class="form-buttons form-inline" onbeforesave="save($data, item, key)" shown="inserted == item">
+                    <div class="btn btn-primary log-in-bttn" ng-click="cancel($event)">Cancel</div>
+                    <button class="btn btn-primary log-in-bttn" type="submit" ng-disable="myform.$waiting" ng-click="cancel($event)">Save</button>
+                    <div class="btn btn-primary log-in-bttn" ng-click="remove(item)">Remove</div>
+                </form>
+            </div>
+            <div ng-show="travel_list.busy">Loading ...</div>
+        </div>
+    </div>
 </div>
