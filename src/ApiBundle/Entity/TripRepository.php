@@ -19,6 +19,10 @@ class TripRepository extends \Doctrine\ORM\EntityRepository
         $order_dir    = $request->get('order_dir', 'DESC');
         $search = $request->get('search', false);
 
+        $date_filter = filter_var($request->get('date_filter_check', false), FILTER_VALIDATE_BOOLEAN);
+        $start_dt_filter = filter_var($request->get('start_dt_filter_check', false), FILTER_VALIDATE_BOOLEAN);
+        $end_dt_filter = filter_var($request->get('end_dt_filter_check', false), FILTER_VALIDATE_BOOLEAN);
+
         $qb = $this
             ->createQueryBuilder('trip')
             ->select(['trip.id', 'trip.start_dt', 'trip.end_dt', 'trip.end_dt', 'trip.created_dt', 'trip.destination', 'trip.departure', 'trip.description'])
@@ -30,9 +34,70 @@ class TripRepository extends \Doctrine\ORM\EntityRepository
             ->setFirstResult($start);
 
         if ($search){
-            $qb //'%$keyword%'
+            $qb
                 ->andWhere('trip.destination LIKE :destination')
                 ->setParameter('destination', '%'.$search.'%');
+        }
+
+        if ($date_filter ){
+            $date_filter_cond = $request->get('date_filter_cond', false);
+            $date_filter_value = $request->get('date_filter_value', false);
+            switch ($date_filter_cond){
+                case '=':
+                    $qb
+                        ->andWhere('trip.start_dt <= :date_filter_value')
+                        ->andWhere('trip.end_dt >= :date_filter_value')
+                        ->setParameter('date_filter_value', $date_filter_value);
+                    break;
+                case '<':
+                    break;
+                case '>':
+                    break;
+            }
+        }
+
+        if ($start_dt_filter){
+            $start_dt_filter_cond = $request->get('start_dt_filter_cond', false);
+            $start_dt_filter_value = $request->get('start_dt_filter_value', false);
+            switch ($start_dt_filter_cond){
+                case '=':
+                    $qb
+                        ->andWhere('trip.start_dt = :start_dt_filter_value')
+                        ->setParameter('start_dt_filter_value', $start_dt_filter_value);
+                    break;
+                case '<':
+                    $qb
+                        ->andWhere('trip.start_dt < :start_dt_filter_value')
+                        ->setParameter('start_dt_filter_value', $start_dt_filter_value);
+                    break;
+                case '>':
+                    $qb
+                        ->andWhere('trip.start_dt > :start_dt_filter_value')
+                        ->setParameter('start_dt_filter_value', $start_dt_filter_value);
+                    break;
+            }
+        }
+
+        if ($end_dt_filter){
+            $end_dt_filter_cond = $request->get('end_dt_filter_cond', false);
+            $end_dt_filter_value = $request->get('end_dt_filter_value', false);
+            switch ($end_dt_filter_cond){
+                case '=':
+                    $qb
+                        ->andWhere('trip.end_dt = :end_dt_filter_value')
+                        ->setParameter('end_dt_filter_value', $end_dt_filter_value);
+                    break;
+                case '<':
+                    $qb
+                        ->andWhere('trip.end_dt < :end_dt_filter_value')
+                        ->setParameter('end_dt_filter_value', $end_dt_filter_value);
+                    break;
+                case '>':
+                    $qb
+                        ->andWhere('trip.end_dt > :end_dt_filter_value')
+                        ->setParameter('end_dt_filter_value', $end_dt_filter_value);
+                    break;
+            }
         }
         //dump($qb->getQuery()->getSQL());die;
 

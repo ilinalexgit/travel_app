@@ -2,8 +2,8 @@
 
 angular
     .module('travelApp')
-    .controller('HomeController', ['$scope', '$location', '$rootScope', 'AuthService', 'loadTravels', 'TravelService', 'TravelListService',
-        function ($scope, $location, $rootScope, AuthService, loadTravels, TravelService, TravelListService) {
+    .controller('HomeController', ['$scope', '$location', '$rootScope', 'AuthService', 'loadTravels', 'TravelService', 'TravelListService', '$filter',
+        function ($scope, $location, $rootScope, AuthService, loadTravels, TravelService, TravelListService, $filter) {
             console.log('home controller');
 
             //var current_opened_id = false;
@@ -14,24 +14,16 @@ angular
 
             $scope.order = 'start_dt_obj';
             $scope.reverse = true;
+            $scope.key_ater_sort = 0;
 
             $scope.searchStr = '';
             $scope.filters = {
-                'date_filter':{
-                    'check': false,
-                    'cond': false,
-                    'value': false
-                },
-                'start_dt_filter':{
-                    'check': false,
-                    'cond': false,
-                    'value': false
-                },
-                'end_dt_filter':{
-                    'check': false,
-                    'cond': false,
-                    'value': false
-                }
+                'date_filter_check': false,
+                'date_filter_cond': '=',
+                'start_dt_filter_check': false,
+                'start_dt_filter_cond': '=',
+                'end_dt_filter_check': false,
+                'end_dt_filter_cond': '='
             };
 
 
@@ -53,28 +45,18 @@ angular
                 $location.path('/admin');
             };
 
+            var removeInserted = function (){
+                if ($scope.inserted){
+                    $scope.travel_list.items.splice(0,1);
+                    $scope.inserted = null;
+                }
+            };
+
             $scope.sortList = function (params){
                 console.log(555);
-                var sort_params = {};
-                if (params.reverse){
-                    sort_params.order_dir = 'DESC';
-                }else{
-                    sort_params.order_dir = 'ASC';
-                }
-                switch (params.order){
-                    case 'start_dt_obj':
-                        sort_params.order_field = 'start_dt';
-                        break;
-                    case 'end_dt_obj':
-                        sort_params.order_field = 'end_dt';
-                        break;
-                    default:
-                        sort_params.order_field = params.order;
-                        break;
-                }
-
+                removeInserted();
+                var sort_params = prepareRequestParams(params);
                 return TravelService.getTravels(sort_params).then(function(data){
-                    console.log(888);
                     window.scrollTo(0, 0);
                     $scope.travel_list.removeItems();
                     $scope.travel_list.addItems(data.data);
@@ -166,6 +148,7 @@ angular
                 if ($scope.inserted){
                     return TravelService.createTravel(obj).then(function (){
                         $scope.travel_list.last++;
+                        $scope.inserted = null;
                     });
 
                 }else{
@@ -178,30 +161,34 @@ angular
                 }
             };
 
-            $scope.addNewTrip = function(){
-                if ($scope.current_opened_id){
-                    $scope.current_opened_el.$cancel();
-                    $scope.current_opened_id = false;
-                    $scope.current_opened_el = false;
+            $scope.addNewTrip = function(data){
+                console.log(322);
+                if (!$scope.inserted){
+                    if ($scope.current_opened_id){
+                        $scope.current_opened_el.$cancel();
+                        $scope.current_opened_id = false;
+                        $scope.current_opened_el = false;
+                    }
+
+
+                    $scope.inserted = {
+                        description: '',
+                        destination: null,
+                        start_dt: '',
+                        end_dt: ''
+                    };
+
+                    //$scope.travel_list.items.splice(1, 0, $scope.inserted);
+                    console.log(data);
+                    //$scope.travel_list.items.push($scope.inserted);
+                    //$scope.travel_list.items.unshift($scope.inserted);
+                    console.log($scope.travel_list.items);
                 }
-
-
-                $scope.inserted = {
-                    description: '',
-                    destination: null,
-                    start_dt: '',
-                    end_dt: ''
-                };
-
-                $scope.travel_list.items.unshift($scope.inserted);
             };
 
             $scope.search = function(){
-                var search_obj = {};
-                if ($scope.searchStr.length > 1){
-                    search_obj.search = $scope.searchStr;
-                }
-                TravelService.getTravels(search_obj).then(function(data){
+                var params = prepareRequestParams();
+                TravelService.getTravels(params).then(function(data){
                     window.scrollTo(0, 0);
                     $scope.travel_list.removeItems();
                     $scope.travel_list.addItems(data.data);
@@ -242,10 +229,62 @@ angular
 
             $scope.filter_end_dt_popup_open = function() {
                 $scope.filter_end_dt_popup.opened = true;
-            }
+            };
 
             $scope.applyFilters = function(){
                 console.log(3222);
+                var params = prepareRequestParams();
+                TravelService.getTravels($scope.filters).then(function(data){
+                    window.scrollTo(0, 0);
+                    $scope.travel_list.removeItems();
+                    $scope.travel_list.addItems(data.data);
+                });
+            };
+
+            var prepareRequestParams = function(params){
+                var res = {};
+                //filters
+                var date_filter_str = $filter('date')($scope.filter_date, 'yyyy-MM-dd');
+                var start_dt_filter_str = $filter('date')($scope.filter_start_dt, 'yyyy-MM-dd');
+                var end_dt_filter_str = $filter('date')($scope.filter_end_dt, 'yyyy-MM-dd');
+
+                $scope.filters.date_filter_value = date_filter_str;
+                $scope.filters.start_dt_filter_value = start_dt_filter_str;
+                $scope.filters.end_dt_filter_value = end_dt_filter_str;
+
+
+                var filters_obj = angular.copy($scope.filters);
+
+                //sort
+                var sort_params = {};
+                if (params){
+                    if (params.reverse){
+                        sort_params.order_dir = 'DESC';
+                    }else{
+                        sort_params.order_dir = 'ASC';
+                    }
+                    switch (params.order){
+                        case 'start_dt_obj':
+                            sort_params.order_field = 'start_dt';
+                            break;
+                        case 'end_dt_obj':
+                            sort_params.order_field = 'end_dt';
+                            break;
+                        default:
+                            sort_params.order_field = params.order;
+                            break;
+                    }
+                }
+
+                //search
+                var search_obj = {};
+                if ($scope.searchStr.length > 1){
+                    search_obj.search = $scope.searchStr;
+                }
+
+                res = angular.extend(filters_obj, sort_params);
+                res = angular.extend(res, search_obj);
+                return res;
             }
         }
     ]);

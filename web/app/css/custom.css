@@ -7,18 +7,32 @@
 }
 
 .score{
-    background-color: green;
+    background-color: #F8F8F8;
     height: 100%;
     margin-bottom: 5px;
     padding-top:20px;
     padding-bottom:20px;
+
+    border-top: solid;
+    border-width: 1px;
+    border-color: #555555;
 }
 
 .table_header{
-    position:fixed;
     width: inherit;
-    background-color: yellow;
     z-index: 1;
+
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: #555555;
+    background-color: #E0E0E0;
+    height: 50px;
+    padding-top: 15px;
+}
+
+.fixed_header{
+    position:fixed;
+    top:0px;
 }
 
 .table_header_row{
@@ -26,7 +40,7 @@
 }
 
 .travel_list_container{
-    margin-top:50px;
+    margin-top:0px;
     z-index: 2;
 }
 
@@ -36,4 +50,8 @@
     text-overflow: ellipsis;
     border-bottom: none;
     color:black;
+}
+
+.top_controls_container{
+    margin-bottom: 20px;
 }
