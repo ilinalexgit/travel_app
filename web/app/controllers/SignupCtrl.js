@@ -9,6 +9,10 @@ angular
             $scope.error_messages = null;
             $scope.success_message = null;
 
+            $scope.goToLogin = function(){
+                $location.path('/login');
+            };
+
             $scope.submit = function (credentials) {
                 $scope.busy = true;
                 $scope.error_messages = null;

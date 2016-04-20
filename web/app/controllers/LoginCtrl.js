@@ -14,7 +14,8 @@ angular
                 console.log($scope.form.$valid);
                 if($scope.form.$valid){
                     AuthService.login(credentials, function(data){
-                            console.log(data);
+                            console.log(999);
+                            console.log(data.user.username);
                             var is_admin = AuthService.isAdmin(data.user.roles);
                             if (is_admin){
                                 $location.path('/admin');

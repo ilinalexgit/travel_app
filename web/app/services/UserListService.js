@@ -11,15 +11,14 @@ angular
                 this.count = 20;
             };
 
-            UserList.prototype.nextPage = function() {
+            UserList.prototype.nextPage = function(params) {
                 console.log(88888);
                 if (this.busy) return;
                 this.busy = true;
 
-                var params = {
-                    'start': this.last,
-                    'length': this.count
-                };
+                params.start = this.last;
+                params.length = this.count;
+
                 UserService.getUsers(params).then(function(data) {
                     var items = data.data;
                     this.addItems(items);

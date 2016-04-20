@@ -2,16 +2,35 @@
 
 namespace ApiBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use ApiBundle\Tests\WebTestCase;
 
-class DefaultControllerTest extends WebTestCase
+/**
+ * PageControllerTest
+ *
+ * @author Nicolas Cabot <n.cabot@lexik.fr>
+ */
+class PageControllerTest extends WebTestCase
 {
-    public function testIndex()
+    /**
+     * @param array $user
+     *
+     * @dataProvider getUsers
+     */
+    public function testGetPages($user)
     {
-        $client = static::createClient();
+        $client = $this->createAuthenticatedClient($user);
+        $client->request('GET', $this->getUrl('api/trips'));
 
-        $crawler = $client->request('GET', '/');
+        $response = $client->getResponse();
+        $this->assertJsonResponse($response, 200);
 
-        $this->assertContains('Hello World', $client->getResponse()->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertInternalType('array', $content);
+        $this->assertCount(10, $content);
+
+        $page = $content[0];
+        $this->assertArrayHasKey('title', $page);
+        $this->assertArrayHasKey('published_at', $page);
+        $this->assertArrayNotHasKey('content', $page);
     }
 }

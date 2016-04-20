@@ -13,6 +13,11 @@ angular
             $scope.order = 'start_dt_obj';
             $scope.reverse = true;
 
+            $scope.username = localStorage.getItem("_travel_app_username");
+            var today = new Date();
+            $scope.today_month = $scope.common_service.getMonthSting(today.getMonth());
+            $scope.today_year = today.getFullYear();
+
             $scope.searchStr = '';
             $scope.filters = {
                 'date_filter_check': false,
@@ -216,6 +221,11 @@ angular
                 }
             };
 
+            $scope.nextPage = function(){
+                var params = prepareRequestParams();
+                $scope.travel_list.nextPage(params);
+            };
+
             $scope.addNewTrip = function(data){
                 console.log(322);
                 if (!$scope.inserted){
@@ -248,7 +258,7 @@ angular
             $scope.filter_start_dt = new Date();
             $scope.filter_end_dt = new Date();
 
-            $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+            $scope.formats = ['dd MMMM yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
             $scope.format = $scope.formats[0];
 
             $scope.dateOptions = {

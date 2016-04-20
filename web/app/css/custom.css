@@ -3,13 +3,13 @@
 }
 
 .sign-up-bttn{
-    margin-right: 5px;
+    margin-top: 10px;
 }
 
 .score{
-    background-color: #F8F8F8;
+
     height: 100%;
-    margin-bottom: 5px;
+
     padding-top:20px;
     padding-bottom:20px;
 
@@ -25,9 +25,10 @@
     border-bottom: solid;
     border-width: 1px;
     border-color: #555555;
-    background-color: #E0E0E0;
+    background-color: #D1D1D1;
     height: 50px;
     padding-top: 15px;
+    font-weight: bold;
 }
 
 .fixed_header{
@@ -53,10 +54,152 @@
 }
 
 .top_controls_container{
-    margin-bottom: 20px;
+    height: 80px;
 }
 
 .modal_travel_plan{
     width: 300px;
     height: 150px;
+}
+
+.login_header_text{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 60px;
+    text-align: center;
+    margin-top: 150px;
+    margin-bottom: 100px;
+}
+
+.login_form_input_group{
+    margin-bottom: 5px;
+}
+
+.login_form_forgot_password{
+    text-decoration: underline;
+    padding-top: 15px;
+}
+
+.login_form_footer{
+    text-align: center;
+    font-weight: bold;
+    line-height: 25px;
+    font-size: 18px;
+}
+
+.login-panel{
+    margin-bottom:40px;
+}
+.list_header_text{
+    font-size: 31px;
+}
+
+.list_header_container{
+    margin-top:40px;
+    margin-bottom: 50px;
+}
+
+.top_buttons_container{
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.top_button{
+    width: 400px;
+    height: 120px;
+    color: #ffffff;
+    font-size: 24px;
+}
+
+.top_button:hover, .top_button:focus {
+    color: #ffffff;
+}
+
+.add_trip_btn{
+    background-color: #337ab7;
+    margin-right: 35px;
+}
+
+.travel_plan_btn{
+    background-color: #8d8d8d;
+    margin-left: 35px;
+}
+
+.travel_plan_btn_secondary_text{
+    font-size: 14px;
+}
+
+.top_controls_text{
+    font-size: 24px;
+    padding-top:15px;
+}
+
+.top_controls_filters{
+    margin-top: 5px;
+    height: 100%;
+}
+
+.filter_row{
+    float: left;
+    margin-bottom: 5px;
+    padding-right: 15px;
+}
+
+.filter_row_checkbox{
+    width: 20px;
+    padding-top: 7px;
+}
+
+.filter_row_text{
+    width: 100px;
+    padding-top: 7px;
+}
+
+.filter_row_select{
+    width: 100px;
+    margin-right: 20px;
+}
+
+.filter_row_date{
+    width: 200px;
+}
+
+.remove_btn, .remove_btn:hover, .remove_btn:focus{
+    background-color: #eb4f30;
+    color: #ffffff;
+}
+
+.cancel_btn, .cancel_btn:hover, .cancel_btn:focus{
+    background-color: #7f7f7f;
+    color: #ffffff;
+}
+
+.save_btn, .save_btn:hover, .save_btn:focus{
+    background-color: #2ed045;
+    color: #ffffff;
+}
+
+.form_buttons{
+    margin-right:25px;
+}
+
+.add_new_trip_textarea{
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.odd_row{
+    background-color: #E6E6E6;
+}
+
+.even_row{
+    background-color: #F8F8F8;
+}
+
+.users_email span{
+    width: 100%;
+}
+
+.user_form_buttons{
+    margin-right:25px;
+    margin-top:10px;
 }

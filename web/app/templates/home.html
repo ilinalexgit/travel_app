@@ -1,36 +1,36 @@
 <div>
-    <div>
-        <button type="submit" href="#" class="btn btn-primary pull-right log-in-bttn" ng-click="logout()">Log Out</button>
-        <!--<button type="submit" href="#" class="btn btn-primary pull-right log-in-bttn" ng-click="test()">Go to login</button>
-        <button type="submit" href="#" class="btn btn-primary pull-right log-in-bttn" ng-click="test2()">Go to admin</button>-->
-    </div>
-    <div style="clear: both"></div>
     <div class="container">
-
+        <div class="list_header_container">
+            <span class="list_header_text">My <span style="color: #d61717;">Trip</span> Planner</span>
+            <div class="pull-right">Hello, {{ username }}<br/>Not you? <a href="#" ng-click="logout()">Sign Out</a></div>
+        </div>
+        <div style="clear: both"></div>
+        <div class="top_buttons_container">
+            <button class="btn top_button add_trip_btn" ng-click="addNewTrip()">Plan a New Trip</button>
+            <button class="btn top_button travel_plan_btn" ng-click="openModal()">Print My Travel Plan<br/><span class="travel_plan_btn_secondary_text">(for {{today_month}} {{today_year}})</span></button>
+        </div>
         <div class="top_controls_container">
-            <button class="btn btn-primary" ng-click="addNewTrip()">Add row</button>
-            <button class="btn btn-primary" ng-click="showFilters = ! showFilters">Filters</button>
-            <button class="btn btn-primary" ng-click="openModal()">Travel plan</button>
+            <div class="pull-left top_controls_text">My Trips</div>
             <div class="pull-right">
                 <input class="form-control" type="text" placeholder="Search" ng-model="searchStr" ng-change="search()" />
+                <a href="#" class="pull-right top_controls_filters" ng-click="showFilters = ! showFilters">[+] Filters</a>
             </div>
         </div>
 
         <div class="filters" ng-show="showFilters">
-
-            <div class="row">
-                <div class="col-md-3">
+            <div class="row pull-right">
+                <div class="filter_row filter_row_checkbox">
                     <input type="checkbox" ng-model="filters.date_filter_check" ng-change="applyFilters()" />
                 </div>
-                <div class="col-md-3">Date</div>
-                <div class="col-md-3">
+                <div class="filter_row filter_row_text">Date</div>
+                <div class="filter_row filter_row_select">
                     <select class="form-control" ng-model="filters.date_filter_cond" ng-change="applyFilters()">
                         <option selected value="=">is</option>
                         <option value=">">later</option>
                         <option value="<">earlier</option>
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="filter_row filter_row_date">
                     <div class="input-group">
                         <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="filter_date" is-open="filter_date_popup.opened" datepicker-options="dateOptions" ng-required="true" ng-change="applyFilters()"/>
                         <span class="input-group-btn">
@@ -39,20 +39,20 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-3">
+            <div style="clear: both"></div>
+            <div class="row pull-right">
+                <div class="filter_row filter_row_checkbox">
                     <input type="checkbox" ng-model="filters.start_dt_filter_check" ng-change="applyFilters()" />
                 </div>
-                <div class="col-md-3">Start Date</div>
-                <div class="col-md-3">
+                <div class="filter_row filter_row_text">Start Date</div>
+                <div class="filter_row filter_row_select">
                     <select class="form-control" ng-model="filters.start_dt_filter_cond" ng-change="applyFilters()">
                         <option selected value="=">is</option>
                         <option value=">">later</option>
                         <option value="<">earlier</option>
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="filter_row filter_row_date">
                     <div class="input-group">
                         <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="filter_start_dt" is-open="filter_start_dt_popup.opened" datepicker-options="dateOptions" ng-required="true" ng-change="applyFilters()"/>
                         <span class="input-group-btn">
@@ -61,20 +61,20 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-3">
+            <div style="clear: both"></div>
+            <div class="row pull-right">
+                <div class="filter_row filter_row_checkbox">
                     <input type="checkbox" ng-model="filters.end_dt_filter_check" ng-change="applyFilters()" />
                 </div>
-                <div class="col-md-3">End Date</div>
-                <div class="col-md-3">
+                <div class="filter_row filter_row_text">End Date</div>
+                <div class="filter_row filter_row_select">
                     <select class="form-control" ng-model="filters.end_dt_filter_cond" ng-change="applyFilters()">
                         <option selected value="=">is</option>
                         <option value=">">later</option>
                         <option value="<">earlier</option>
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="filter_row filter_row_date">
                     <div class="input-group">
                         <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="filter_end_dt" is-open="filter_end_dt_popup.opened" datepicker-options="dateOptions" ng-required="true" ng-change="applyFilters()"/>
                         <span class="input-group-btn">
@@ -83,9 +83,8 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
+        <div style="clear: both"></div>
         <div class="table_header row" ng-show="travel_list.items">
             <div class="table_header_row col-md-1" sort order="'diff'" by="order" reverse="reverse" update-method="sortList">Count</div>
             <div class="table_header_row col-md-3" sort order="'start_dt_obj'" by="order" reverse="reverse" update-method="sortList">Start Date</div>
@@ -94,7 +93,7 @@
             <div class="table_header_row col-md-3">Notes</div>
         </div>
 
-        <div class="travel_list_container" infinite-scroll='travel_list.nextPage()' infinite-scroll-disabled='travel_list.busy' infinite-scroll-distance='0' infinite-scroll-immediate-check="false">
+        <div class="travel_list_container" infinite-scroll='nextPage()' infinite-scroll-disabled='travel_list.busy' infinite-scroll-distance='0' infinite-scroll-immediate-check="false">
             <div class="row score" ng-show="inserted">
                 <div class="col-md-1">-</div>
                 <div class="col-md-3">
@@ -116,26 +115,28 @@
                 <div class="col-md-2">
                     <input type="text" ng-model="inserted.destination" class="form-control" />
                 </div>
-                <div class="col-md-3">
-                    <textarea ng-model="inserted.description" class="form-control"></textarea>
+                <div class="col-md-8 col-md-offset-4 add_new_trip_textarea">
+                    <textarea ng-model="inserted.description" class="form-control" e-rows="7"></textarea>
                 </div>
-                <div class="btn btn-primary log-in-bttn" ng-click="cancel($event)">Cancel</div>
-                <div class="btn btn-primary log-in-bttn" ng-click="save()">Save</div>
+                <div class="form_buttons pull-right">
+                    <div class="btn cancel_btn" ng-click="cancel($event)">Cancel</div>
+                    <div class="btn save_btn" ng-click="save()">Save</div>
+                </div>
             </div>
-            <div class="score row" ng-repeat='(key, item) in travel_list.items | orderBy:order:reverse' ng-click="expand(item, myform)">
+            <div class="score row" ng-class-odd="'odd_row'" ng-class-even="'even_row'" ng-repeat='(key, item) in travel_list.items | orderBy:order:reverse' ng-click="expand(item, myform)">
                 <div class="col-md-1">
                     <div>
                         {{ item.diff_str }}
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div buttons="no" e-name="start_dt" editable-bsdate="item.start_dt_obj" e-form="myform" e-is-open="opened1.$data" e-ng-click="open1($event,'$data')" e-datepicker-popup="dd-MMMM-yyyy">
-                        {{ (item.start_dt_obj | date:"dd-MMMM-yyyy") }}
+                    <div buttons="no" e-name="start_dt" editable-bsdate="item.start_dt_obj" e-form="myform" e-is-open="opened1.$data" e-ng-click="open1($event,'$data')" e-datepicker-popup="dd MMMM yyyy">
+                        {{ (item.start_dt_obj | date:"dd MMMM yyyy") }}
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div buttons="no" e-name="end_dt" editable-bsdate="item.end_dt_obj" e-form="myform" e-is-open="opened2.$data" e-ng-click="open2($event,'$data')" e-datepicker-popup="dd-MMMM-yyyy">
-                        {{ (item.end_dt_obj | date:"dd-MMMM-yyyy") }}
+                    <div buttons="no" e-name="end_dt" editable-bsdate="item.end_dt_obj" e-form="myform" e-is-open="opened2.$data" e-ng-click="open2($event,'$data')" e-datepicker-popup="dd MMMM yyyy">
+                        {{ (item.end_dt_obj | date:"dd MMMM yyyy") }}
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -143,16 +144,22 @@
                         {{item.destination}}
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="description_text" editable-textarea="item.description" e-form="myform" e-name="description" e-rows="7" e-cols="40">
+                <div class="col-md-3" ng-show="!myform.$visible">
+                    <div class="description_text" buttons="no" e-form="notexistedform" editable-textarea="item.description" e-name="description" e-rows="7" e-cols="40">
                         {{item.description}}
                     </div>
                 </div>
                 <div style="clear: both "></div>
-                <form editable-form name="myform" ng-show="myform.$visible" class="form-buttons form-inline" onbeforesave="save($data, item, key)" >
-                    <div class="btn btn-primary log-in-bttn" ng-click="cancel($event)">Cancel</div>
-                    <button class="btn btn-primary log-in-bttn" type="submit" ng-disable="myform.$waiting">Save</button>
-                    <div class="btn btn-primary log-in-bttn" ng-click="remove(item)">Remove</div>
+                <div class="col-md-8 col-md-offset-4" ng-show="myform.$visible">
+                    <div class="description_text" editable-textarea="item.description" e-form="myform" e-name="description" e-rows="7" e-cols="120">
+                        {{item.description}}
+                    </div>
+                </div>
+                <div style="clear: both "></div>
+                <form editable-form name="myform" ng-show="myform.$visible" class="form_buttons form-buttons form-inline pull-right" onbeforesave="save($data, item, key)" >
+                    <div class="btn remove_btn" ng-click="remove(item)">Remove</div>
+                    <div class="btn cancel_btn" ng-click="cancel($event)">Cancel</div>
+                    <button class="btn save_btn" type="submit" ng-disable="myform.$waiting">Save</button>
                 </form>
             </div>
         </div>

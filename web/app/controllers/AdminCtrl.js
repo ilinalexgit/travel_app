@@ -14,6 +14,8 @@ angular
             $scope.reverse = true;
             $scope.searchStr = '';
 
+            $scope.username = localStorage.getItem("_travel_app_username");
+
             $scope.logout = function (credentials) {
                 $scope.error_message = null;
                 AuthService.logout();
@@ -22,6 +24,11 @@ angular
 
             $scope.test = function (credentials) {
                 $location.path('/home');
+            };
+
+            $scope.nextPage = function(){
+                var params = prepareRequestParams(params);
+                $scope.user_list.nextPage(params);
             };
 
             //////////////////////////////////

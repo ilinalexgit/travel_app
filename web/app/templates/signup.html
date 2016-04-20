@@ -1,8 +1,11 @@
 <div class="container">
+    <div class="login_header_text">
+        My <span style="color: #d61717;">Trip</span> Planner
+    </div>
     <div class="mainbox col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-        <div class="panel panel-default" >
+        <div class="panel panel-default login-panel" >
             <div class="panel-heading">
-                <div class="panel-title text-center">Travel app</div>
+                <div class="panel-title text-center"><b>Sign Up</b></div>
             </div>
 
             <div class="panel-body" >
@@ -17,28 +20,32 @@
                 </div>
 
                 <form name="form" class="form-horizontal" enctype="multipart/form-data" method="POST" novalidate>
-                    <div class="input-group">
+                    <div class="input-group login_form_input_group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input type="text" class="form-control" ng-model="credentials.username" name="user" value="" placeholder="User" required="" />
                     </div>
 
-                    <div class="input-group">
+                    <div class="input-group login_form_input_group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                         <input type="email" class="form-control" ng-model="credentials.email" name="email" value="" placeholder="Email" required="" />
                     </div>
 
-                    <div class="input-group">
+                    <div class="input-group login_form_input_group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input type="password" class="form-control" ng-model="credentials.password" name="password" value="" placeholder="Password" required="" />
                     </div>
 
                     <div class="login-form-bttn-group">
-                        <button type="submit" href="#" class="btn btn-primary pull-right sign-up-bttn" ng-click="submit(credentials)" ng-disabled="busy">Sign Up</button>
-                        <button type="submit" ui-sref="login" class="btn btn-danger pull-right log-in-bttn">Cancel</button>
+                        <button type="submit" href="#" class="btn btn-primary pull-right" ng-click="submit(credentials)" ng-disabled="busy">Sign Up</button>
+                        <!--<button type="submit" ui-sref="login" class="btn btn-danger pull-right log-in-bttn">Cancel</button>-->
                     </div>
                 </form>
 
             </div>
+        </div>
+        <div class="login_form_footer">
+            <div>Already have account?</div>
+            <a href="#" ng-click="goToLogin()">Log in</a>
         </div>
     </div>
 </div>

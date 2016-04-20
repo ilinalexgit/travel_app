@@ -27,6 +27,7 @@ angular
                     }).success(function (data, status, headers, config) {
                         if (data.token){
                             localStorage.setItem("_travel_app_token", data.token);
+                            localStorage.setItem("_travel_app_username", data.user.username);
                             $http.defaults.headers.common.Authorization = 'Bearer ' + data.token;
                             handleSuccess(data);
                         }else{
@@ -39,6 +40,7 @@ angular
                 logout:function() {
                     delete $http.defaults.headers.common.Authorization;
                     localStorage.setItem("_travel_app_token", '');
+                    localStorage.setItem("_travel_app_username", '');
                 },
                 isLogin:function(){
                     var token = localStorage.getItem("_travel_app_token");
