@@ -58,4 +58,5 @@ security:
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users, roles: ROLE_ADMIN }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }

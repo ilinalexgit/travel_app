@@ -2,19 +2,16 @@
 
 angular
     .module('travelApp')
-    .controller('HomeController', ['$scope', '$location', '$rootScope', 'AuthService', 'loadTravels', 'TravelService', 'TravelListService', '$filter',
-        function ($scope, $location, $rootScope, AuthService, loadTravels, TravelService, TravelListService, $filter) {
+    .controller('HomeController', ['$scope', '$location', '$rootScope', 'AuthService', 'loadTravels', 'TravelService', 'TravelListService', '$filter', 'CommonService', '$uibModal',
+        function ($scope, $location, $rootScope, AuthService, loadTravels, TravelService, TravelListService, $filter, CommonService, $uibModal) {
             console.log('home controller');
-
-            //var current_opened_id = false;
-            //var current_opened_el = false;
 
             $scope.travel_list = new TravelListService();
             $scope.travel_list.addItems(loadTravels.data);
+            $scope.common_service = new CommonService();
 
             $scope.order = 'start_dt_obj';
             $scope.reverse = true;
-            $scope.key_ater_sort = 0;
 
             $scope.searchStr = '';
             $scope.filters = {
@@ -47,7 +44,6 @@ angular
 
             var removeInserted = function (){
                 if ($scope.inserted){
-                    $scope.travel_list.items.splice(0,1);
                     $scope.inserted = null;
                 }
             };
@@ -65,26 +61,56 @@ angular
             };
 
             $scope.expand = function(item, showEl){
-                console.log('expand');
-                //console.log(current_opened_id);
-                console.log(item.id);
-                if ($scope.inserted){
-                    $scope.travel_list.items.splice(0,1);
-                    $scope.inserted = null;
-                }
-                if ($scope.current_opened_el && $scope.current_opened_id != item.id){
-                    $scope.current_opened_el.$cancel();
-                    showEl.$show();
-                }else if($scope.current_opened_id != item.id){
-                    showEl.$show();
-                }
-
-                $scope.current_opened_id = item.id;
-                $scope.current_opened_el = showEl;
+                $scope.common_service.expand(item, showEl, $scope);
             };
 
-            $scope.user = {
-                name: 'awesome user'
+            $scope.openModal = function(item, showEl){
+                console.log('open modal');
+                var modalInstance = $uibModal.open({
+                    animation: false,
+                    templateUrl: 'templates/modal.html',
+                    controller: 'ModalController'
+                });
+
+                modalInstance.result.then(function (selectedItem) {
+                    console.log(selectedItem);
+
+                    var date = new Date(selectedItem.year, selectedItem.month);
+                    var params = {
+                        'start_dt_filter_check': true,
+                        'start_dt_filter_cond': 'between',
+                        'start_dt_filter_value': $filter('date')(date, 'yyyy-MM-dd')
+                    };
+                    TravelService.getTravels(params).then(function(data){
+                        console.log('dsssss');
+                        console.log(data);
+                        var printContents = '<style>' +
+                            'table, th, td {' +
+                            'border: 1px solid black;' +
+                            'border-collapse: collapse;' +
+                            '}' +
+                            'th, td {' +
+                            'padding: 15px;' +
+                            '}' +
+                            '</style><table>';
+                        printContents += '<tr><td>Start Date</td><td>End Date</td><td>Destination</td><td>Notes</td></tr>';
+                        for (var i=0; i<data.data.length; i++){
+                            printContents += '<tr><td>'+data.data[i].start_dt.date.substr(0,data.data[i].start_dt.date.indexOf('.'))+'</td><td>'+data.data[i].end_dt.date.substr(0,data.data[i].end_dt.date.indexOf('.'))+'</td><td>'+data.data[i].destination+'</td><td>'+data.data[i].description+'</td></tr>';
+                        }
+                        printContents += '</table>';
+
+
+                        var popupWin = window.open('', '_blank', 'width=600,height=600');
+                        popupWin.document.open();
+                        popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="style.css" /></head><body onload="window.print()">' + printContents + '</body></html>');
+                        popupWin.document.close();
+                    });
+
+
+
+                }, function () {
+                    console.log('Modal dismissed at: ' + new Date());
+                });
             };
 
             $scope.opened1 = {};
@@ -115,16 +141,16 @@ angular
             };
 
             $scope.cancel = function($event){
-                if ($scope.inserted){
-                    $scope.travel_list.items.splice(0,1);
+                $scope.common_service.cancel($event, $scope);
+                /*if ($scope.inserted){
                     $scope.inserted = null;
                 }else{
                     $scope.current_opened_el.$cancel();
-                    $scope.current_opened_id = false;
+                    $scope.current_opened = false;
                     $scope.current_opened_el = false;
                     $event.preventDefault();
                     $event.stopPropagation();
-                }
+                }*/
             };
 
             $scope.remove = function(item){
@@ -135,28 +161,57 @@ angular
 
             $scope.save = function(data, item, key){
                 console.log(data);
-                var obj = {
-                    'description': data.description,
-                    'destination': data.destination,
-                    'start_dt': {
-                        'date': data.start_dt || 'error'
-                    },
-                    'end_dt': {
-                        'date': data.end_dt || 'error'
-                    }
-                };
+
                 if ($scope.inserted){
-                    return TravelService.createTravel(obj).then(function (){
+                    console.log($scope.inserted);
+                    var obj = {
+                        'description': $scope.inserted.description,
+                        'destination': $scope.inserted.destination,
+                        'start_dt': {
+                            'date': $scope.inserted.start_dt || 'error'
+                        },
+                        'end_dt': {
+                            'date': $scope.inserted.end_dt || 'error'
+                        }
+                    };
+
+                    return TravelService.createTravel(obj).then(function (data){
+                        console.log($scope.inserted);
+                        $scope.inserted.id = data.data.trip_id;
+                        $scope.inserted.start_dt_obj = $scope.inserted.start_dt;
+                        $scope.inserted.end_dt_obj = $scope.inserted.end_dt;
+
+                        var diff = $scope.travel_list.getDiff($scope.inserted.start_dt_obj, $scope.inserted.end_dt_obj);
+                        $scope.inserted.diff = diff.diffDays;
+                        $scope.inserted.diff_str = diff.diffStr;
+
+                        $scope.travel_list.items.push($scope.inserted);
                         $scope.travel_list.last++;
                         $scope.inserted = null;
                     });
 
                 }else{
 
+                    var obj = {
+                        'description': data.description,
+                        'destination': data.destination,
+                        'start_dt': {
+                            'date': data.start_dt || 'error'
+                        },
+                        'end_dt': {
+                            'date': data.end_dt || 'error'
+                        }
+                    };
+
                     return TravelService.editTravel(obj, item.id).then(function (){
                         console.log("edited");
-                        $scope.current_opened_id = false;
+
+                        $scope.current_opened = false;
                         $scope.current_opened_el = false;
+
+                        var diff = $scope.travel_list.getDiff(data.start_dt, data.end_dt);
+                        item.diff = diff.diffDays;
+                        item.diff_str = diff.diffStr;
                     });
                 }
             };
@@ -164,9 +219,9 @@ angular
             $scope.addNewTrip = function(data){
                 console.log(322);
                 if (!$scope.inserted){
-                    if ($scope.current_opened_id){
+                    if ($scope.current_opened){
                         $scope.current_opened_el.$cancel();
-                        $scope.current_opened_id = false;
+                        $scope.current_opened = false;
                         $scope.current_opened_el = false;
                     }
 
@@ -177,12 +232,6 @@ angular
                         start_dt: '',
                         end_dt: ''
                     };
-
-                    //$scope.travel_list.items.splice(1, 0, $scope.inserted);
-                    console.log(data);
-                    //$scope.travel_list.items.push($scope.inserted);
-                    //$scope.travel_list.items.unshift($scope.inserted);
-                    console.log($scope.travel_list.items);
                 }
             };
 
@@ -230,6 +279,25 @@ angular
             $scope.filter_end_dt_popup_open = function() {
                 $scope.filter_end_dt_popup.opened = true;
             };
+
+            $scope.new_start_dt_popup = {
+                opened: false
+            };
+
+            $scope.new_start_dt_popup_open = function() {
+                $scope.new_start_dt_popup.opened = true;
+            };
+
+            $scope.new_end_dt_popup = {
+                opened: false
+            };
+
+            $scope.new_end_dt_popup_open = function() {
+                $scope.new_end_dt_popup.opened = true;
+            };
+
+
+
 
             $scope.applyFilters = function(){
                 console.log(3222);

@@ -1,9 +1,6 @@
 $( document ).ready(function() {
     var posFromTop = 85;
     $(window).on("scroll", function(e) {
-
-        console.log('scroll');
-        console.log(posFromTop);
         if ($(window).scrollTop() > posFromTop/*85*/) {
             console.log('add');
             $('.table_header').addClass("fixed_header");

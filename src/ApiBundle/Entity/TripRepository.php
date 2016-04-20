@@ -3,6 +3,8 @@
 namespace ApiBundle\Entity;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\DateTime;
+
 /**
  * TripRepository
  *
@@ -50,8 +52,15 @@ class TripRepository extends \Doctrine\ORM\EntityRepository
                         ->setParameter('date_filter_value', $date_filter_value);
                     break;
                 case '<':
+                    $qb
+                        ->andWhere('trip.start_dt < :start_dt_filter_value')
+                        ->setParameter('start_dt_filter_value', $date_filter_value);
+                    break;
                     break;
                 case '>':
+                    $qb
+                        ->andWhere('trip.start_dt > :start_dt_filter_value')
+                        ->setParameter('start_dt_filter_value', $date_filter_value);
                     break;
             }
         }
@@ -74,6 +83,17 @@ class TripRepository extends \Doctrine\ORM\EntityRepository
                     $qb
                         ->andWhere('trip.start_dt > :start_dt_filter_value')
                         ->setParameter('start_dt_filter_value', $start_dt_filter_value);
+                    break;
+                case 'between':
+                    $start_dt_filter_value1 = new \DateTime($start_dt_filter_value);
+                    $start_dt_filter_value2 = new \DateTime($start_dt_filter_value);
+                    $start_dt_filter_value1->modify('first day of this month');
+                    $start_dt_filter_value2->modify('last day of this month');
+
+                    $qb
+                        ->andWhere('trip.start_dt BETWEEN :start_dt_filter_value1 AND :start_dt_filter_value2')
+                        ->setParameter('start_dt_filter_value1', $start_dt_filter_value1)
+                        ->setParameter('start_dt_filter_value2', $start_dt_filter_value2);
                     break;
             }
         }

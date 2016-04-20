@@ -104,6 +104,7 @@ class ApiController extends Controller
         if (!$trip) {
             $responseArr['success'] = false;
             $responseArr['errors'] = 'Unable to find trip.';
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
         }else{
             $em->remove($trip);
             $em->flush();
@@ -150,6 +151,7 @@ class ApiController extends Controller
             $em->persist($trip);
             $em->flush();
             $responseArr['success'] = true;
+            $responseArr['trip_id'] = $trip->getId();
         }
 
         $response->setData($responseArr);

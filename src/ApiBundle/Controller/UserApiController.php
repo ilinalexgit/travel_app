@@ -71,5 +71,143 @@ class UserApiController extends Controller
 
         return $response;
     }
+
+    /**
+     * @Route("/users", name="users")
+     * @Method({"GET"})
+     */
+    public function usersShowAction(Request $request)
+    {
+        $doctrine = $this->getDoctrine();
+        $users   = $doctrine->getRepository('ApiBundle:User')->fileterByRequest($request);
+
+        $response = new JsonResponse();
+        $response->setData($users);
+        return $response;
+    }
+
+    /**
+     * @Route("/users/{id}", name="user_delete")
+     * @Method({"DELETE"})
+     */
+    public function userDeleteAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $userRepo = $em->getRepository('ApiBundle:User');
+        $user = $userRepo->find($id);
+        $response = new JsonResponse();
+        if (!$user) {
+            $responseArr['success'] = false;
+            $responseArr['errors'] = 'Unable to find user.';
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }else{
+            $em->remove($user);
+            $em->flush();
+            $responseArr['success'] = true;
+        }
+        $response->setData($responseArr);
+        return $response;
+    }
+
+    /**
+     * @Route("/users/{id}", name="user_update")
+     * @Method({"PUT"})
+     */
+    public function userUpdateAction($id, Request $request)
+    {
+        $responseArr = array();
+        $em = $this->getDoctrine()->getManager();
+        $userRepo = $em->getRepository('ApiBundle:User');
+
+        $user = $userRepo->find($id);
+        $response = new JsonResponse();
+        if (!$user) {
+            $responseArr['success'] = false;
+            $responseArr['errors'] = 'Unable to find user.';
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }else{
+            $user->setUsername($request->get('username', NULL));
+            $user->setPlainPassword('update');
+            $password = $request->get('password', NULL);
+            $user->setEmail($request->get('email', NULL));
+            $is_admin = filter_var($request->get('is_admin', NULL), FILTER_VALIDATE_BOOLEAN);
+
+            if ($is_admin){
+                $user->setRoles(array('ROLE_USER','ROLE_ADMIN'));
+            }else{
+                $user->setRoles(array('ROLE_USER'));
+            }
+
+            $validator = $this->get('validator');
+            $errors = $validator->validate($user);
+
+            if (count($errors) > 0) {
+                $responseArr['success'] = false;
+                $responseArr['errors'] = ApiController::getErrorsTextsArray($errors);
+                $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+            }else{
+                if ($password){
+                    $password = $this->get('security.password_encoder')
+                        ->encodePassword($user, $user->getPlainPassword());
+                    $user->setPassword($password);
+                }
+
+                $em->persist($user);
+                $em->flush();
+
+                $responseArr['success'] = true;
+            }
+        }
+
+        $response->setData($responseArr);
+        return $response;
+    }
+
+    /**
+     * @Route("/users", name="user_add")
+     * @Method({"POST"})
+     */
+    public function userAddAction(Request $request)
+    {
+        $responseArr = array();
+        $responseArr['errors'] = array();
+        $response = new JsonResponse();
+        $user = $this->getUser();
+
+        $user = new User();
+        $user->setUsername($request->get('username', NULL));
+        $user->setPlainPassword($request->get('password', NULL));
+        $user->setEmail($request->get('email', NULL));
+        $is_admin = filter_var($request->get('is_admin', NULL), FILTER_VALIDATE_BOOLEAN);
+
+        if ($is_admin){
+            $user->setRoles(array('ROLE_USER','ROLE_ADMIN'));
+        }else{
+            $user->setRoles(array('ROLE_USER'));
+        }
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($user);
+
+
+        if (count($errors) > 0) {
+            $responseArr['success'] = false;
+            $responseArr['errors'] = ApiController::getErrorsTextsArray($errors);
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }else{
+            $em = $this->getDoctrine()->getManager();
+            $password = $this->get('security.password_encoder')
+                ->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
+
+            $em->persist($user);
+            $em->flush();
+            $responseArr['success'] = true;
+            $responseArr['user_id'] = $user->getId();
+        }
+
+        $response->setData($responseArr);
+        return $response;
+    }
 }
 

@@ -1,4 +1,71 @@
 <div>
-    <button type="submit" href="#" class="btn btn-danger pull-right log-in-bttn" ng-click="logout()">Log Out</button>
-    <button type="submit" href="#" class="btn btn-danger pull-right log-in-bttn" ng-click="test()">test</button>
+    <button type="submit" href="#" class="btn btn-primary pull-right log-in-bttn" ng-click="logout()">Log Out</button>
+    <button type="submit" href="#" class="btn btn-primary pull-right log-in-bttn" ng-click="test()">List</button>
+    <div style="clear: both"></div>
+    <div class="container">
+        <div class="top_controls_container">
+            <button class="btn btn-primary" ng-click="addNewUser()">Add user</button>
+            <div class="pull-right">
+                <input class="form-control" type="text" placeholder="Search" ng-model="searchStr" ng-change="search()" />
+            </div>
+        </div>
+
+        <div class="table_header row" ng-show="user_list.items">
+            <div class="table_header_row col-md-3" sort order="'username'" by="order" reverse="reverse" update-method="sortList">Username</div>
+            <div class="table_header_row col-md-3" >Password</div>
+            <div class="table_header_row col-md-3" sort order="'email'" by="order" reverse="reverse" update-method="sortList">Email</div>
+            <div class="table_header_row col-md-3" >Is Admin</div>
+        </div>
+
+        <div class="travel_list_container" infinite-scroll='user_list.nextPage()' infinite-scroll-disabled='user_list.busy' infinite-scroll-distance='0' infinite-scroll-immediate-check="false">
+
+            <div class="row score" ng-show="inserted">
+                <div class="col-md-3">
+                    <input type="text" class="form-control" ng-model="inserted.username" />
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" ng-model="inserted.password" />
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" ng-model="inserted.email" />
+                </div>
+                <div class="col-md-3">
+                    <input type="checkbox" ng-model="inserted.is_admin" />
+                </div>
+                <div style="clear: both"></div>
+                <div class="btn btn-primary log-in-bttn" ng-click="cancel($event)">Cancel</div>
+                <div class="btn btn-primary log-in-bttn" ng-click="save()">Save</div>
+            </div>
+
+            <div class="score row" ng-repeat='(key, item) in user_list.items | orderBy:order:reverse' ng-click="expand(item, myform)">
+                <div class="col-md-3">
+                    <div buttons="no" editable-text="item.username" e-form="myform" e-name="username">
+                        {{item.username}}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div buttons="no" editable-text="item.plainPassword" e-form="myform" e-name="plainPassword">
+                        ********
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div buttons="no" editable-text="item.email" e-form="myform" e-name="email">
+                        {{item.email}}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div buttons="no" editable-checkbox="item.is_admin" e-title="Is Admin?" e-form="myform" e-name="is_admin">
+                        {{ item.is_admin && "Admin" || "Not Admin" }}
+                    </div>
+                </div>
+                <div style="clear: both "></div>
+                <form editable-form name="myform" ng-show="myform.$visible" class="form-buttons form-inline" onbeforesave="save($data, item, key)" >
+                    <div class="btn btn-primary log-in-bttn" ng-click="cancel($event)">Cancel</div>
+                    <button class="btn btn-primary log-in-bttn" type="submit" ng-disable="myform.$waiting">Save</button>
+                    <div class="btn btn-primary log-in-bttn" ng-click="remove(item)">Remove</div>
+                </form>
+            </div>
+        </div>
+
+    </div>
 </div>

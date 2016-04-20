@@ -19,20 +19,29 @@ angular
             },
             link: function(scope, element, attrs) {
                 scope.onClick = function () {
-                    console.log(scope.order);
-                    var tmp_reverse = false;
-                    if( scope.order === scope.by ) {
-                        tmp_reverse = !scope.reverse
-                    }
-                    scope.updateMethod({'order':scope.order, 'reverse':tmp_reverse}).then(function(){
-                        console.log(999);
+                    var simpleSort = function(){
                         if( scope.order === scope.by ) {
                             scope.reverse = !scope.reverse
                         } else {
                             scope.by = scope.order ;
                             scope.reverse = false;
                         }
-                    });
+                    };
+
+                    console.log(scope.order);
+                    if (scope.order == 'diff'){
+                        simpleSort();
+                    }else{
+                        var tmp_reverse = false;
+                        if( scope.order === scope.by ) {
+                            tmp_reverse = !scope.reverse
+                        }
+                        scope.updateMethod({'order':scope.order, 'reverse':tmp_reverse}).then(function(){
+                            console.log(999);
+                            simpleSort();
+                        });
+                    }
+
                 }
             }
         }

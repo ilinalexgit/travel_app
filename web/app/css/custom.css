@@ -55,3 +55,8 @@
 .top_controls_container{
     margin-bottom: 20px;
 }
+
+.modal_travel_plan{
+    width: 300px;
+    height: 150px;
+}

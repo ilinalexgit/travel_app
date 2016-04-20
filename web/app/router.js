@@ -43,6 +43,11 @@ angular
                         if (allowLoadAdmin){
                             return $ocLazyLoad.load(['controllers/AdminCtrl.js']);
                         }
+                    }],
+
+                    loadUsers:['UserService', 'loadAdminCtrl', function(UserService, loadHomeCtrl){
+                        console.log('load users relsolve');
+                        return UserService.getUsers();
                     }]
                 },
                 templateUrl: function (){
