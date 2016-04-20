@@ -66,11 +66,9 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
-    spool:     { type: memory }
+    transport: gmail
+    username:  travelapp11
+    password:  dadbafMop7
 
 lexik_jwt_authentication:
     private_key_path: %jwt_private_key_path%

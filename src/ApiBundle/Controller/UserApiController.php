@@ -46,6 +46,19 @@ class UserApiController extends Controller
             $em->persist($user);
             $em->flush();
             $responseArr['success'] = true;
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Hello Email')
+                ->setFrom('travelapp@gmail.com')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'ApiBundle:Emails:registration.html.twig',
+                        array('username' => $user->getUsername(), 'password' => $user->getPlainPassword())
+                    ),
+                    'text/html'
+                );
+            $this->get('mailer')->send($message);
         }
 
         $response->setData($responseArr);
