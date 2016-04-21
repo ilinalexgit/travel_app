@@ -185,8 +185,9 @@ angular
                         $scope.inserted.id = data.data.trip_id;
                         $scope.inserted.start_dt_obj = $scope.inserted.start_dt;
                         $scope.inserted.end_dt_obj = $scope.inserted.end_dt;
+                        var now = new Date();
 
-                        var diff = $scope.travel_list.getDiff($scope.inserted.start_dt_obj, $scope.inserted.end_dt_obj);
+                        var diff = $scope.travel_list.getDiff(now, $scope.inserted.start_dt_obj);
                         $scope.inserted.diff = diff.diffDays;
                         $scope.inserted.diff_str = diff.diffStr;
 
@@ -213,8 +214,9 @@ angular
 
                         $scope.current_opened = false;
                         $scope.current_opened_el = false;
+                        var now = new Date();
 
-                        var diff = $scope.travel_list.getDiff(data.start_dt, data.end_dt);
+                        var diff = $scope.travel_list.getDiff(now, data.start_dt);
                         item.diff = diff.diffDays;
                         item.diff_str = diff.diffStr;
                     });
