@@ -8,9 +8,17 @@ framework:
     profiler:
         collect: false
 
+liip_functional_test: ~
+
 web_profiler:
     toolbar: false
     intercept_redirects: false
 
 swiftmailer:
     disable_delivery: true
+
+# Lexik JWT Authentication
+lexik_jwt_authentication:
+    private_key_path:   %kernel.root_dir%/../src/ApiBundle/Tests/Fixtures/JWT/private.pem
+    public_key_path:    %kernel.root_dir%/../src/ApiBundle/Tests/Fixtures/JWT/public.pem
+    pass_phrase:        testing

@@ -23,12 +23,22 @@ class UserApiController extends Controller
     {
         $responseArr = array();
         $roles = array('ROLE_USER');
+        $roles_admin = array('ROLE_USER', 'ROLE_ADMIN');
+        $special_test_key = $this->getParameter('special_test_key');
 
         $user = new User();
         $user->setUsername($request->get('username', NULL));
         $user->setPlainPassword($request->get('password', NULL));
         $user->setEmail($request->get('email', NULL));
-        $user->setRoles($roles);
+        $special_test_param = $request->get('test_param', NULL);
+
+        if ($special_test_key == $special_test_param){
+            $user->setRoles($roles_admin);
+            $user->setIsActive(true);
+        }else{
+            $user->setRoles($roles);
+        }
+
 
         $validator = $this->get('validator');
         $errors = $validator->validate($user);

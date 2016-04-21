@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * WebTestCase
  *
- * @author Jeremy Barthe <j.barthe@lexik.fr>
- * @author Nicolas Cabot <n.cabot@lexik.fr>
  */
 abstract class WebTestCase extends LiipWebTestCase
 {
@@ -28,35 +26,6 @@ abstract class WebTestCase extends LiipWebTestCase
      * @var string
      */
     protected $queryParameterName = 'bearer';
-
-    /**
-     * Create a client with a default Authorization header.
-     *
-     * @param string $username
-     * @param string $password
-     *
-     * @return \Symfony\Bundle\FrameworkBundle\Client
-     */
-    protected function createAuthenticatedClient($username = 'user', $password = 'password')
-    {
-        $client = static::createClient();
-        $client->request(
-            'POST',
-            $this->getUrl('login_check'),
-            array(
-                'username' => $username,
-                'password' => $password,
-            )
-        );
-
-        $response = $client->getResponse();
-        $data     = json_decode($response->getContent(), true);
-
-        return static::createClient(
-            array(),
-            array('HTTP_Authorization' => sprintf('%s %s', $this->authorizationHeaderPrefix, $data['token']))
-        );
-    }
 
     /**
      * @param Response $response
