@@ -12,7 +12,6 @@ angular
             };
 
             TravelList.prototype.nextPage = function(params) {
-                console.log(88888);
                 if (this.busy) return;
                 this.busy = true;
 
@@ -27,20 +26,27 @@ angular
             };
 
             TravelList.prototype.getDiff = function(start, end) {
-                var timeDiff = Math.abs(end.getTime() - start.getTime());
+                var timeDiff = (end.getTime() - start.getTime());
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
                 var res = {};
                 res.diffDays = diffDays;
-                if (diffDays == 0){
-                    res.diffStr = 'Today';
+                if (diffDays < 0){
+                    res.diffStr = '-';
                 }else{
-                    if (diffDays.toString().slice(-1) == '1' && diffDays.toString().slice(-2) != '11'){
-                        res.diffStr = 'in ' + diffDays + ' day';
+                    if (diffDays == 0){
+                        res.diffStr = 'Today';
+                    }else if (diffDays == 1){
+                        res.diffStr = 'Tomorrow';
                     }else{
-                        res.diffStr = 'in ' + diffDays + ' days';
+                        if (diffDays.toString().slice(-1) == '1' && diffDays.toString().slice(-2) != '11'){
+                            res.diffStr = 'in ' + diffDays + ' day';
+                        }else{
+                            res.diffStr = 'in ' + diffDays + ' days';
+                        }
                     }
                 }
+
 
                 return res;
             };
@@ -49,8 +55,9 @@ angular
                 for (var i = 0; i < items.length; i++) {
                     items[i].start_dt_obj = new Date(items[i].start_dt.date.replace(' ', 'T'));
                     items[i].end_dt_obj = new Date(items[i].end_dt.date.replace(' ', 'T'));
+                    var now = new Date();
 
-                    var diff_obj = this.getDiff(items[i].start_dt_obj, items[i].end_dt_obj);
+                    var diff_obj = this.getDiff(now, items[i].start_dt_obj);
                     items[i].diff = diff_obj.diffDays;
                     items[i].diff_str = diff_obj.diffStr;
 

@@ -237,4 +237,13 @@ class Trip
     {
         return $this->user;
     }
+
+    public function getTripAsArray(){
+        $arr = array();
+        $arr['description'] = $this->getDescription();
+        $arr['destination'] = $this->getDestination();
+        $arr['start_dt'] = $this->getStartDt();
+        $arr['end_dt'] = $this->getEndDt();
+        return $arr;
+    }
 }

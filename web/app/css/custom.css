@@ -1,3 +1,6 @@
+.content_container{
+    min-width:1000px;
+}
 .login-form-bttn-group{
     margin-right: 0px;
 }
@@ -29,6 +32,7 @@
     height: 50px;
     padding-top: 15px;
     font-weight: bold;
+    min-width:1000px;
 }
 
 .fixed_header{

@@ -26,8 +26,14 @@ class JWTResponseListener
             return;
         }
 
-        $data['user'] = $user->getUserAsArray();
+        if ($user->getIsActive()){
+            $data['user'] = $user->getUserAsArray();
+        }else{
+            unset($data['token']);
+            $data['message'] = 'Account is not active.';
+        }
 
         $event->setData($data);
+
     }
 }

@@ -5,3 +5,9 @@ api:
 
 api_login_check:
     path: /api/login_check
+
+
+simplelanding:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+    prefix:   /

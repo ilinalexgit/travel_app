@@ -30,8 +30,9 @@ class ApiController extends Controller
             $responseArr['success'] = false;
             $responseArr['errors'] = 'Unable to find trip.';
             $response->setData($responseArr);
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
         }else{
-            $response->setData($trip);
+            $response->setData($trip->getTripAsArray());
         }
 
         return $response;

@@ -4,7 +4,6 @@ angular
     .module('travelApp')
     .controller('HomeController', ['$scope', '$location', '$rootScope', 'AuthService', 'loadTravels', 'TravelService', 'TravelListService', '$filter', 'CommonService', '$uibModal',
         function ($scope, $location, $rootScope, AuthService, loadTravels, TravelService, TravelListService, $filter, CommonService, $uibModal) {
-            console.log('home controller');
 
             $scope.travel_list = new TravelListService();
             $scope.travel_list.addItems(loadTravels.data);
@@ -15,8 +14,15 @@ angular
 
             $scope.username = localStorage.getItem("_travel_app_username");
             var today = new Date();
-            $scope.today_month = $scope.common_service.getMonthSting(today.getMonth());
-            $scope.today_year = today.getFullYear();
+            var next_month = today.getMonth()+1;
+            var year = today.getFullYear();
+            if (next_month == 12){
+                next_month = 0;
+                year++;
+            }
+
+            $scope.today_month = $scope.common_service.getMonthSting(next_month);
+            $scope.today_year = year;
 
             $scope.searchStr = '';
             $scope.filters = {
@@ -30,8 +36,6 @@ angular
 
 
             $scope.travels = [];
-            console.log(loadTravels.data);
-            console.log($scope.travel_list);
 
             $scope.logout = function (credentials) {
                 $scope.error_message = null;
@@ -54,7 +58,6 @@ angular
             };
 
             $scope.sortList = function (params){
-                console.log(555);
                 removeInserted();
                 var sort_params = prepareRequestParams(params);
                 return TravelService.getTravels(sort_params).then(function(data){
@@ -70,7 +73,6 @@ angular
             };
 
             $scope.openModal = function(item, showEl){
-                console.log('open modal');
                 var modalInstance = $uibModal.open({
                     animation: false,
                     templateUrl: 'templates/modal.html',
@@ -78,7 +80,6 @@ angular
                 });
 
                 modalInstance.result.then(function (selectedItem) {
-                    console.log(selectedItem);
 
                     var date = new Date(selectedItem.year, selectedItem.month);
                     var params = {
@@ -87,8 +88,6 @@ angular
                         'start_dt_filter_value': $filter('date')(date, 'yyyy-MM-dd')
                     };
                     TravelService.getTravels(params).then(function(data){
-                        console.log('dsssss');
-                        console.log(data);
                         var printContents = '<style>' +
                             'table, th, td {' +
                             'border: 1px solid black;' +
@@ -114,7 +113,7 @@ angular
 
 
                 }, function () {
-                    console.log('Modal dismissed at: ' + new Date());
+                    // console.log('Modal dismissed at: ' + new Date());
                 });
             };
 
@@ -124,9 +123,7 @@ angular
             $scope.open1 = function($event, elementOpened) {
                 $event.preventDefault();
                 $event.stopPropagation();
-                console.log(elementOpened);
                 $scope.opened1[elementOpened] = !$scope.opened1[elementOpened];
-                console.log($scope.opened1[elementOpened]);
 
                 if ($scope.opened1[elementOpened]){
                     $scope.opened2[elementOpened] = false;
@@ -164,35 +161,54 @@ angular
                 });
             };
 
+            $scope.checkDestination = function(data){
+                if ( !data.destination || data.destination.trim() == ''){
+                    return 'Can not be empty.';
+                }
+            };
+
+            $scope.checkStartDate = function(data){
+                if ( !data.start_dt){
+                    return 'Invalid date.';
+                }
+            };
+
+            $scope.checkEndDate = function(data){
+                if ( !data.end_dt ){
+                    return 'Invalid date.';
+                }else if (data.start_dt && data.start_dt > data.end_dt){
+                    return 'End date can\'t be before start date.';
+                }
+            };
+
             $scope.save = function(data, item, key){
-                console.log(data);
 
                 if ($scope.inserted){
-                    console.log($scope.inserted);
                     var obj = {
-                        'description': $scope.inserted.description,
-                        'destination': $scope.inserted.destination,
+                        'description': data.description,
+                        'destination': data.destination,
                         'start_dt': {
-                            'date': $scope.inserted.start_dt || 'error'
+                            'date': data.start_dt || 'error'
                         },
                         'end_dt': {
-                            'date': $scope.inserted.end_dt || 'error'
+                            'date': data.end_dt || 'error'
                         }
                     };
 
-                    return TravelService.createTravel(obj).then(function (data){
-                        console.log($scope.inserted);
-                        $scope.inserted.id = data.data.trip_id;
-                        $scope.inserted.start_dt_obj = $scope.inserted.start_dt;
-                        $scope.inserted.end_dt_obj = $scope.inserted.end_dt;
+                    return TravelService.createTravel(obj).then(function (data_res){
+                        obj.id = data_res.data.trip_id;
+                        obj.start_dt_obj = data.start_dt;
+                        obj.end_dt_obj = data.end_dt;
+                        var now = new Date();
 
-                        var diff = $scope.travel_list.getDiff($scope.inserted.start_dt_obj, $scope.inserted.end_dt_obj);
-                        $scope.inserted.diff = diff.diffDays;
-                        $scope.inserted.diff_str = diff.diffStr;
+                        var diff = $scope.travel_list.getDiff(now, obj.start_dt_obj);
+                        obj.diff = diff.diffDays;
+                        obj.diff_str = diff.diffStr;
 
-                        $scope.travel_list.items.push($scope.inserted);
+                        $scope.travel_list.items.push(obj);
                         $scope.travel_list.last++;
-                        $scope.inserted = null;
+                        $scope.inserted = undefined;
+                        $scope.inserted.description = '';
                     });
 
                 }else{
@@ -209,12 +225,12 @@ angular
                     };
 
                     return TravelService.editTravel(obj, item.id).then(function (){
-                        console.log("edited");
 
                         $scope.current_opened = false;
                         $scope.current_opened_el = false;
+                        var now = new Date();
 
-                        var diff = $scope.travel_list.getDiff(data.start_dt, data.end_dt);
+                        var diff = $scope.travel_list.getDiff(now, data.start_dt);
                         item.diff = diff.diffDays;
                         item.diff_str = diff.diffStr;
                     });
@@ -226,9 +242,9 @@ angular
                 $scope.travel_list.nextPage(params);
             };
 
-            $scope.addNewTrip = function(data){
-                console.log(322);
+            $scope.addNewTrip = function(showEl){
                 if (!$scope.inserted){
+                    showEl.$show();
                     if ($scope.current_opened){
                         $scope.current_opened_el.$cancel();
                         $scope.current_opened = false;
@@ -310,7 +326,6 @@ angular
 
 
             $scope.applyFilters = function(){
-                console.log(3222);
                 var params = prepareRequestParams();
                 TravelService.getTravels($scope.filters).then(function(data){
                     window.scrollTo(0, 0);

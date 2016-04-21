@@ -12,7 +12,6 @@ angular
             };
 
             UserList.prototype.nextPage = function(params) {
-                console.log(88888);
                 if (this.busy) return;
                 this.busy = true;
 
