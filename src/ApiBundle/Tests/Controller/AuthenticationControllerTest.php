@@ -41,7 +41,7 @@ class AuthenticationControllerTest extends WebTestCase
     /**
      * test login
      */
-    public function testLoginSuccess()
+    public function testCommonBehavior()
     {
         $specialTestParam = $this->client->getKernel()->getContainer()->getParameter('special_test_key');
         $data = array(
