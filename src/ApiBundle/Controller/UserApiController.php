@@ -136,7 +136,7 @@ class UserApiController extends Controller
                     UrlGeneratorInterface::ABSOLUTE_URL
                 );
                 $message = \Swift_Message::newInstance()
-                    ->setSubject('Password Recovery')
+                    ->setSubject('My Travel Planner - Password Recovery')
                     ->setFrom('travelapp@gmail.com')
                     ->setTo($user->getEmail())
                     ->setBody(
@@ -175,7 +175,7 @@ class UserApiController extends Controller
             $now = new \DateTime('now', new \DateTimeZone('UTC'));
             $expiresDate = $user->getPasswordRecoveryCodeExpires();
             if ($now >= $expiresDate){
-                $message = 'Your code is expired.';
+                $message = 'Sorry, your link has expired.';
             }else{
                 $newPwd = md5(uniqid(rand(), true));
                 $password = $this->get('security.password_encoder')
@@ -187,7 +187,7 @@ class UserApiController extends Controller
                 $em->flush();
 
                 $message = \Swift_Message::newInstance()
-                    ->setSubject('Password Recovery')
+                    ->setSubject('My Trip Planner - Password Recovery (Your New Password)')
                     ->setFrom('travelapp@gmail.com')
                     ->setTo($user->getEmail())
                     ->setBody(
