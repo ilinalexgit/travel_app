@@ -5,19 +5,15 @@ var travelApp =
 
                 return {
                     request: function(request) {
-                        console.log('myHttpInterceptor - request');
                         return request;
                     },
                     requestError: function(requestError) {
-                        console.log('myHttpInterceptor - requestError');
                         return requestError;
                     },
                     response: function(response) {
-                        console.log('myHttpInterceptor - response');
                         return response;
                     },
                     responseError: function(responseError) {
-                        console.log('myHttpInterceptor - responseError');
                         var AuthService = $injector.get('AuthService');
                         if (responseError.status == 401){
                             AuthService.logout();

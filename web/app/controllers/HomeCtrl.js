@@ -113,7 +113,7 @@ angular
 
 
                 }, function () {
-                    console.log('Modal dismissed at: ' + new Date());
+                    // console.log('Modal dismissed at: ' + new Date());
                 });
             };
 
@@ -177,7 +177,7 @@ angular
                 if ( !data.end_dt ){
                     return 'Invalid date.';
                 }else if (data.start_dt && data.start_dt > data.end_dt){
-                    return 'End date can not be > start date.';
+                    return 'End date can\'t be before start date.';
                 }
             };
 

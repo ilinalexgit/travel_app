@@ -97,7 +97,7 @@ class UserApiController extends Controller
 
         $response = new JsonResponse();
         if(!$user){
-            $message = 'Specified code is invalid.';
+            $message = 'Your account is probably already active.';
         }else{
             $user->setIsActive(true);
             $user->setAccountActivationCode(null);
@@ -105,7 +105,7 @@ class UserApiController extends Controller
             $em->persist($user);
             $em->flush();
 
-            $message = 'Your account is active.';
+            $message = 'Your account is now active.';
         }
 
         return new Response($message);
