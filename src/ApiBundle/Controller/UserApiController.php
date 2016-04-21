@@ -57,7 +57,7 @@ class UserApiController extends Controller
             );
 
             $message = \Swift_Message::newInstance()
-                ->setSubject('Hello Email')
+                ->setSubject('Welcome to My Trip Planner!')
                 ->setFrom('travelapp@gmail.com')
                 ->setTo($user->getEmail())
                 ->setBody(
