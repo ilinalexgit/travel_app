@@ -178,6 +178,7 @@ class UserApiController extends Controller
                 $message = 'Sorry, your link has expired.';
             }else{
                 $newPwd = md5(uniqid(rand(), true));
+                $newPwd = substr($newPwd,0,8);
                 $password = $this->get('security.password_encoder')
                     ->encodePassword($user, $newPwd);
                 $user->setPassword($password);
@@ -193,7 +194,7 @@ class UserApiController extends Controller
                     ->setBody(
                         $this->renderView(
                             'ApiBundle:Emails:password_reset.html.twig',
-                            array('pwd' => $newPwd)
+                            array('pwd' => $newPwd, 'login' => $user->getUsername())
                         ),
                         'text/html'
                     );
@@ -342,7 +343,6 @@ class UserApiController extends Controller
 
         $validator = $this->get('validator');
         $errors = $validator->validate($user);
-
 
         if (count($errors) > 0) {
             $responseArr['success'] = false;

@@ -15,8 +15,15 @@ angular
 
             $scope.username = localStorage.getItem("_travel_app_username");
             var today = new Date();
-            $scope.today_month = $scope.common_service.getMonthSting(today.getMonth());
-            $scope.today_year = today.getFullYear();
+            var next_month = today.getMonth()+1;
+            var year = today.getFullYear();
+            if (next_month == 12){
+                next_month = 0;
+                year++;
+            }
+
+            $scope.today_month = $scope.common_service.getMonthSting(next_month);
+            $scope.today_year = year;
 
             $scope.searchStr = '';
             $scope.filters = {

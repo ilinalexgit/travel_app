@@ -1,5 +1,5 @@
 <div>
-    <div class="container">
+    <div class="container content_container">
 
         <div class="list_header_container">
             <span class="list_header_text">My <span style="color: #d61717;">Trip</span> Planner</span>
@@ -17,31 +17,31 @@
         </div>
 
         <div class="table_header row" ng-show="user_list.items">
-            <div class="table_header_row col-md-3" sort order="'username'" by="order" reverse="reverse" update-method="sortList">Username</div>
-            <div class="table_header_row col-md-3" >Password</div>
-            <div class="table_header_row col-md-4" sort order="'email'" by="order" reverse="reverse" update-method="sortList">Email</div>
-            <div class="table_header_row col-md-2" >Is Admin</div>
+            <div class="table_header_row col-xs-3" sort order="'username'" by="order" reverse="reverse" update-method="sortList">Username</div>
+            <div class="table_header_row col-xs-3" >Password</div>
+            <div class="table_header_row col-xs-4" sort order="'email'" by="order" reverse="reverse" update-method="sortList">Email</div>
+            <div class="table_header_row col-xs-2" >Is Admin</div>
         </div>
 
         <div class="travel_list_container" infinite-scroll='nextPage()' infinite-scroll-disabled='user_list.busy' infinite-scroll-distance='0' infinite-scroll-immediate-check="false">
 
             <div class="row score" ng-show="inserted">
-                <div class="col-md-3">
+                <div class="col-xs-3">
                     <!--<input type="text" class="form-control" ng-model="inserted.username" maxlength="64" />-->
                     <div class="description_text" e-maxlength="64" buttons="no" onbeforesave="checkUsername(myform2.$data)" editable-text="inserted.username" e-form="myform2" e-name="username">
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-xs-3">
                     <!--<input type="text" class="form-control" ng-model="inserted.password" />-->
                     <div buttons="no" editable-text="inserted.password" onbeforesave="checkPassword(myform2.$data)" e-form="myform2" e-name="plainPassword">
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-xs-4">
                     <!--<input type="email" class="form-control" ng-model="inserted.email" maxlength="64" />-->
                     <div class="description_text" e-maxlength="64" onbeforesave="checkEmail(myform2.$data)" e-type="email" buttons="no" editable-text="inserted.email" e-form="myform2" e-name="email">
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-xs-2">
                     <!--<input type="checkbox" ng-model="inserted.is_admin" />-->
                     <div buttons="no" editable-checkbox="inserted.is_admin" e-title="Is Admin?" e-form="myform2" e-name="is_admin"></div>
                 </div>
@@ -54,22 +54,22 @@
             </div>
 
             <div class="score row" ng-class-odd="'odd_row'" ng-class-even="'even_row'" ng-repeat='(key, item) in user_list.items | orderBy:order:reverse' ng-click="expand(item, myform)">
-                <div class="col-md-3">
+                <div class="col-xs-3">
                     <div class="description_text" e-maxlength="64" buttons="no" onbeforesave="checkUsername(myform.$data)" editable-text="item.username" e-form="myform" e-name="username">
                         {{item.username}}
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-xs-3">
                     <div buttons="no" editable-text="item.plainPassword" e-form="myform" e-name="plainPassword">
                         ********
                     </div>
                 </div>
-                <div class="col-md-4 users_email">
+                <div class="col-xs-4 users_email">
                     <div class="description_text" e-maxlength="64" onbeforesave="checkEmail(myform.$data)" e-type="email" buttons="no" editable-text="item.email" e-form="myform" e-name="email">
                         {{item.email}}
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-xs-2">
                     <div buttons="no" editable-checkbox="item.is_admin" e-title="Is Admin?" e-form="myform" e-name="is_admin">
                         {{ item.is_admin && "Admin" || "Not Admin" }}
                     </div>

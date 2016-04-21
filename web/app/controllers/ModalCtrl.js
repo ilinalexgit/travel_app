@@ -30,7 +30,7 @@ angular
                 });
                 today_month++;
             }
-            $scope.selected = $scope.items[0];
+            $scope.selected = $scope.items[1];
 
             $scope.ok = function () {
                 $uibModalInstance.close($scope.selected);
