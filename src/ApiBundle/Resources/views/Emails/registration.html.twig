@@ -1,3 +1,16 @@
 <div>
-    Hello, {{ username }}! Your password is  {{ password }}.
+    Hello, {{ username|e }}!
+</div>
+
+<div>
+    Thank you for joining My Trip Planner. A good way to keep track of your trips.
+</div>
+
+<div>
+    You have successfully joined My Trip Planner. Below are your account credentials:
+</div>
+
+<div>
+    <b>Login: {{ username|e}}</b>
+    <b>Password: {{ password|e}}</b>
 </div>
