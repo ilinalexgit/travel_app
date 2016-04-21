@@ -331,6 +331,7 @@ class UserApiController extends Controller
         $user->setUsername($request->get('username', NULL));
         $user->setPlainPassword($request->get('password', NULL));
         $user->setEmail($request->get('email', NULL));
+        $user->setIsActive(true);
         $is_admin = filter_var($request->get('is_admin', NULL), FILTER_VALIDATE_BOOLEAN);
 
         if ($is_admin){

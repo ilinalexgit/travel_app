@@ -164,36 +164,64 @@ angular
                 });
             };
 
+            $scope.checkDestination = function(data){
+                console.log(555);
+                console.log(data);
+                if ( !data.destination || data.destination.trim() == ''){
+                    return 'Can not be empty.';
+                }
+            };
+
+            $scope.checkStartDate = function(data){
+                console.log(555);
+                console.log(data);
+                if ( !data.start_dt){
+                    return 'Invalid date.';
+                }
+            };
+
+            $scope.checkEndDate = function(data){
+                console.log(555);
+                console.log(data);
+                if ( !data.end_dt ){
+                    return 'Invalid date.';
+                }else if (data.start_dt && data.start_dt > data.end_dt){
+                    return 'End date can not be > start date.';
+                }
+            };
+
             $scope.save = function(data, item, key){
                 console.log(data);
 
                 if ($scope.inserted){
                     console.log($scope.inserted);
                     var obj = {
-                        'description': $scope.inserted.description,
-                        'destination': $scope.inserted.destination,
+                        'description': data.description,
+                        'destination': data.destination,
                         'start_dt': {
-                            'date': $scope.inserted.start_dt || 'error'
+                            'date': data.start_dt || 'error'
                         },
                         'end_dt': {
-                            'date': $scope.inserted.end_dt || 'error'
+                            'date': data.end_dt || 'error'
                         }
                     };
 
-                    return TravelService.createTravel(obj).then(function (data){
+                    return TravelService.createTravel(obj).then(function (data_res){
                         console.log($scope.inserted);
-                        $scope.inserted.id = data.data.trip_id;
-                        $scope.inserted.start_dt_obj = $scope.inserted.start_dt;
-                        $scope.inserted.end_dt_obj = $scope.inserted.end_dt;
+                        obj.id = data_res.data.trip_id;
+                        obj.start_dt_obj = data.start_dt;
+                        obj.end_dt_obj = data.end_dt;
                         var now = new Date();
 
-                        var diff = $scope.travel_list.getDiff(now, $scope.inserted.start_dt_obj);
-                        $scope.inserted.diff = diff.diffDays;
-                        $scope.inserted.diff_str = diff.diffStr;
+                        var diff = $scope.travel_list.getDiff(now, obj.start_dt_obj);
+                        obj.diff = diff.diffDays;
+                        obj.diff_str = diff.diffStr;
 
-                        $scope.travel_list.items.push($scope.inserted);
+                        console.log(obj);
+                        $scope.travel_list.items.push(obj);
                         $scope.travel_list.last++;
-                        $scope.inserted = null;
+                        $scope.inserted = undefined;
+                        $scope.inserted.description = '';
                     });
 
                 }else{
@@ -228,9 +256,12 @@ angular
                 $scope.travel_list.nextPage(params);
             };
 
-            $scope.addNewTrip = function(data){
+            $scope.addNewTrip = function(showEl){
                 console.log(322);
+                console.log($scope.inserted);
                 if (!$scope.inserted){
+                    console.log(323);
+                    showEl.$show();
                     if ($scope.current_opened){
                         $scope.current_opened_el.$cancel();
                         $scope.current_opened = false;

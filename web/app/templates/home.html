@@ -1,12 +1,12 @@
 <div>
-    <div class="container">
+    <div class="container content_container">
         <div class="list_header_container">
             <span class="list_header_text">My <span style="color: #d61717;">Trip</span> Planner</span>
             <div class="pull-right">Hello, {{ username }}<br/>Not you? <a href="#" ng-click="logout()">Sign Out</a></div>
         </div>
         <div style="clear: both"></div>
         <div class="top_buttons_container">
-            <button class="btn top_button add_trip_btn" ng-click="addNewTrip()">Plan a New Trip</button>
+            <button class="btn top_button add_trip_btn" ng-click="addNewTrip(myform2)">Plan a New Trip</button>
             <button class="btn top_button travel_plan_btn" ng-click="openModal()">Print My Travel Plan<br/><span class="travel_plan_btn_secondary_text">(for {{today_month}} {{today_year}})</span></button>
         </div>
         <div class="top_controls_container">
@@ -97,31 +97,39 @@
             <div class="row score" ng-show="inserted">
                 <div class="col-md-1">-</div>
                 <div class="col-md-3">
-                    <div class="input-group">
+                    <!--<div class="input-group">
                         <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="inserted.start_dt" is-open="new_start_dt_popup.opened" datepicker-options="dateOptions" ng-required="true" />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="new_start_dt_popup_open()"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
+                    </div>-->
+                    <div buttons="no" e-name="start_dt" editable-bsdate="inserted.start_dt" e-form="myform2" onbeforesave="checkStartDate(myform2.$data)" e-is-open="opened1.$data" e-ng-click="open1($event,'$data')" e-datepicker-popup="dd MMMM yyyy">
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="input-group">
+                    <!--<div class="input-group">
                         <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="inserted.end_dt" is-open="new_end_dt_popup.opened" datepicker-options="dateOptions" ng-required="true" />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="new_end_dt_popup_open()"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
+                    </div>-->
+                    <div buttons="no" e-name="end_dt" editable-bsdate="inserted.end_dt" e-form="myform2" onbeforesave="checkEndDate(myform2.$data)" e-is-open="opened2.$data" e-ng-click="open2($event,'$data')" e-datepicker-popup="dd MMMM yyyy">
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <input type="text" ng-model="inserted.destination" class="form-control" maxlength="64" />
+                    <!--<input type="text" buttons="no" e-form="myform2" ng-model="inserted.destination" onbeforesave="checkDestination($data)" e-name="destination" class="form-control" e-maxlength="64" />-->
+                    <div class="description_text" editable-text="inserted.destination" e-form="myform2" onbeforesave="checkDestination(myform2.$data)" e-name="destination" e-maxlength="64"></div>
                 </div>
                 <div class="col-md-8 col-md-offset-4 add_new_trip_textarea">
-                    <textarea ng-model="inserted.description" class="form-control" maxlength="4096" e-rows="7"></textarea>
+                    <!--<textarea ng-model="inserted.description" class="form-control" maxlength="4096" e-rows="7"></textarea>-->
+                    <div class="description_text" editable-textarea="inserted.description" e-form="myform2" e-maxlength="4096" e-name="description" e-rows="7" e-cols="120">
+                        {{item.description}}
+                    </div>
                 </div>
-                <div class="form_buttons pull-right">
-                    <div class="btn cancel_btn" ng-click="cancel($event)">Cancel</div>
-                    <div class="btn save_btn" ng-click="save()">Save</div>
-                </div>
+                <form editable-form name="myform2" ng-show="myform2.$visible" class="form_buttons form-buttons form-inline pull-right" onbeforesave="save($data, item, key)" >
+                        <div class="btn cancel_btn" ng-click="cancel($event)">Cancel</div>
+                        <button type="submit" class="btn save_btn" ng-disable="myform2.$waiting">Save</button>
+                </form>
             </div>
             <div class="score row" ng-class-odd="'odd_row'" ng-class-even="'even_row'" ng-repeat='(key, item) in travel_list.items | orderBy:order:reverse' ng-click="expand(item, myform)">
                 <div class="col-md-1">
@@ -130,17 +138,17 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div buttons="no" e-name="start_dt" editable-bsdate="item.start_dt_obj" e-form="myform" e-is-open="opened1.$data" e-ng-click="open1($event,'$data')" e-datepicker-popup="dd MMMM yyyy">
+                    <div buttons="no" e-name="start_dt" editable-bsdate="item.start_dt_obj" e-form="myform" onbeforesave="checkStartDate(myform.$data)" e-is-open="opened1.$data" e-ng-click="open1($event,'$data')" e-datepicker-popup="dd MMMM yyyy">
                         {{ (item.start_dt_obj | date:"dd MMMM yyyy") }}
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div buttons="no" e-name="end_dt" editable-bsdate="item.end_dt_obj" e-form="myform" e-is-open="opened2.$data" e-ng-click="open2($event,'$data')" e-datepicker-popup="dd MMMM yyyy">
+                    <div buttons="no" e-name="end_dt" editable-bsdate="item.end_dt_obj" e-form="myform"  onbeforesave="checkEndDate(myform.$data)" e-is-open="opened2.$data" e-ng-click="open2($event,'$data')" e-datepicker-popup="dd MMMM yyyy">
                         {{ (item.end_dt_obj | date:"dd MMMM yyyy") }}
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <div class="description_text" editable-text="item.destination" e-form="myform" e-name="destination" e-maxlength="64">
+                    <div class="description_text" editable-text="item.destination" e-form="myform" onbeforesave="checkDestination(myform.$data)" e-name="destination" e-maxlength="64">
                         {{item.destination}}
                     </div>
                 </div>

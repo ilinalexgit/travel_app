@@ -10,7 +10,7 @@
 
 
         <div class="top_controls_container">
-            <button class="btn btn-primary" ng-click="addNewUser()">Add user</button>
+            <button class="btn btn-primary" ng-click="addNewUser(myform2)">Add user</button>
             <div class="pull-right">
                 <input class="form-control" type="text" placeholder="Search" ng-model="searchStr" ng-change="search()" />
             </div>
@@ -27,27 +27,35 @@
 
             <div class="row score" ng-show="inserted">
                 <div class="col-md-3">
-                    <input type="text" class="form-control" ng-model="inserted.username" maxlength="64" />
+                    <!--<input type="text" class="form-control" ng-model="inserted.username" maxlength="64" />-->
+                    <div class="description_text" e-maxlength="64" buttons="no" onbeforesave="checkUsername(myform2.$data)" editable-text="inserted.username" e-form="myform2" e-name="username">
+                    </div>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" ng-model="inserted.password" />
+                    <!--<input type="text" class="form-control" ng-model="inserted.password" />-->
+                    <div buttons="no" editable-text="inserted.password" onbeforesave="checkPassword(myform2.$data)" e-form="myform2" e-name="plainPassword">
+                    </div>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" ng-model="inserted.email" maxlength="64" />
+                    <!--<input type="email" class="form-control" ng-model="inserted.email" maxlength="64" />-->
+                    <div class="description_text" e-maxlength="64" onbeforesave="checkEmail(myform2.$data)" e-type="email" buttons="no" editable-text="inserted.email" e-form="myform2" e-name="email">
+                    </div>
                 </div>
                 <div class="col-md-2">
-                    <input type="checkbox" ng-model="inserted.is_admin" />
+                    <!--<input type="checkbox" ng-model="inserted.is_admin" />-->
+                    <div buttons="no" editable-checkbox="inserted.is_admin" e-title="Is Admin?" e-form="myform2" e-name="is_admin"></div>
                 </div>
                 <div style="clear: both"></div>
-                <div class="user_form_buttons pull-right">
+
+                <form editable-form name="myform2" ng-show="myform2.$visible" class="user_form_buttons form-buttons form-inline pull-right" onbeforesave="save($data, item, key)" >
                     <div class="btn cancel_btn" ng-click="cancel($event)">Cancel</div>
-                    <div class="btn save_btn" ng-click="save()">Save</div>
-                </div>
+                    <button type="submit" class="btn save_btn" >Save</button>
+                </form>
             </div>
 
             <div class="score row" ng-class-odd="'odd_row'" ng-class-even="'even_row'" ng-repeat='(key, item) in user_list.items | orderBy:order:reverse' ng-click="expand(item, myform)">
                 <div class="col-md-3">
-                    <div class="description_text" e-maxlength="64" buttons="no" editable-text="item.username" e-form="myform" e-name="username">
+                    <div class="description_text" e-maxlength="64" buttons="no" onbeforesave="checkUsername(myform.$data)" editable-text="item.username" e-form="myform" e-name="username">
                         {{item.username}}
                     </div>
                 </div>
@@ -57,7 +65,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 users_email">
-                    <div class="description_text" e-maxlength="64" buttons="no" editable-text="item.email" e-form="myform" e-name="email">
+                    <div class="description_text" e-maxlength="64" onbeforesave="checkEmail(myform.$data)" e-type="email" buttons="no" editable-text="item.email" e-form="myform" e-name="email">
                         {{item.email}}
                     </div>
                 </div>

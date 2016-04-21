@@ -51,6 +51,18 @@ angular
                 $scope.current_opened_el = showEl;*/
             };
 
+            $scope.checkUsername = function(data){
+                if ( !data.username || data.username.trim() == ''){
+                    return 'Can not be empty.';
+                }
+            };
+
+            $scope.checkEmail = function(data){
+                if ( !data.email || data.email.trim() == ''){
+                    return 'Invalid email.';
+                }
+            };
+
             $scope.cancel = function($event){
                 $scope.common_service.cancel($event, $scope);
                 /*if ($scope.inserted){
@@ -95,18 +107,19 @@ angular
                 if ($scope.inserted){
                     console.log($scope.inserted);
                     var obj = {
-                        'username': $scope.inserted.username,
-                        'password': $scope.inserted.password,
-                        'email': $scope.inserted.email,
-                        'is_admin': $scope.inserted.is_admin
+                        'username': data.username,
+                        'password': data.plainPassword,
+                        'email': data.email,
+                        'is_admin': data.is_admin
                     };
 
                     return UserService.createUser(obj).then(function (data){
                         console.log($scope.inserted);
-                        $scope.inserted.id = data.data.user_id;
-                        $scope.user_list.items.push($scope.inserted);
+                        obj.id = data.data.user_id;
+                        $scope.user_list.items.push(obj);
                         $scope.user_list.last++;
                         $scope.inserted = null;
+                        $scope.inserted.id = '';
                     });
 
                 }else{
@@ -137,6 +150,7 @@ angular
 
             $scope.addNewUser = function(data){
                 if (!$scope.inserted){
+                    data.$show();
                     if ($scope.current_opened){
                         $scope.current_opened_el.$cancel();
                         $scope.current_opened = false;
@@ -151,6 +165,13 @@ angular
                     };
                 }
             };
+
+            $scope.checkPassword = function(data){
+                if ( !data.plainPassword || data.plainPassword.trim() == ''){
+                    return 'Can not be empty.';
+                }
+            };
+
 
             var prepareRequestParams = function(params){
                 var res = {};
