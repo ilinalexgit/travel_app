@@ -47,7 +47,7 @@ var travelApp =
 
                     $rootScope.$on('$locationChangeStart', function (event, next, current) {
 
-                        if (!AuthService.isLogin() && $location.url() != '/signup'){
+                        if (!AuthService.isLogin() && $location.url() != '/signup' && $location.url() != '/password_recovery'){
                             console.log('need to login');
                             $location.path('/login');
                             console.log('12345');
@@ -55,12 +55,12 @@ var travelApp =
 
                         console.log(next);
                         console.log(current);
-                        if (AuthService.isLogin() && ($location.url() == '/signup' || $location.url() == '/login')){
+                        if (AuthService.isLogin() && ($location.url() == '/signup' || $location.url() == '/login' || $location.url() == '/password_recovery')){
                             console.log('already logged in');
                             event.preventDefault();
                         }
 
-                        if (AuthService.isLogin() && next == current && ($location.url() == '/signup' || $location.url() == '/login')){
+                        if (AuthService.isLogin() && next == current && ($location.url() == '/signup' || $location.url() == '/login' || $location.url() == '/password_recovery')){
                             console.log('already logged in 2');
                             $location.path('/');
                         }

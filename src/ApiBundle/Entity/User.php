@@ -61,9 +61,24 @@ class User implements UserInterface, \Serializable
      */
     private $trips;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $passwordRecoveryCode;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $passwordRecoveryCodeExpires;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $accountActivationCode;
+
     public function __construct()
     {
-        $this->isActive = true;
+        $this->isActive = false;
         $this->products = new ArrayCollection();
         // may not be needed, see section on salt below
         // $this->salt = md5(uniqid(null, true));
@@ -271,5 +286,77 @@ class User implements UserInterface, \Serializable
     public function getTrips()
     {
         return $this->trips;
+    }
+
+    /**
+     * Set passwordRecoveryCode
+     *
+     * @param string $passwordRecoveryCode
+     *
+     * @return User
+     */
+    public function setPasswordRecoveryCode($passwordRecoveryCode)
+    {
+        $this->passwordRecoveryCode = $passwordRecoveryCode;
+
+        return $this;
+    }
+
+    /**
+     * Get passwordRecoveryCode
+     *
+     * @return string
+     */
+    public function getPasswordRecoveryCode()
+    {
+        return $this->passwordRecoveryCode;
+    }
+
+    /**
+     * Set passwordRecoveryCodeExpires
+     *
+     * @param \DateTime $passwordRecoveryCodeExpires
+     *
+     * @return User
+     */
+    public function setPasswordRecoveryCodeExpires($passwordRecoveryCodeExpires)
+    {
+        $this->passwordRecoveryCodeExpires = $passwordRecoveryCodeExpires;
+
+        return $this;
+    }
+
+    /**
+     * Get passwordRecoveryCodeExpires
+     *
+     * @return \DateTime
+     */
+    public function getPasswordRecoveryCodeExpires()
+    {
+        return $this->passwordRecoveryCodeExpires;
+    }
+
+    /**
+     * Set accountActivationCode
+     *
+     * @param string $accountActivationCode
+     *
+     * @return User
+     */
+    public function setAccountActivationCode($accountActivationCode)
+    {
+        $this->accountActivationCode = $accountActivationCode;
+
+        return $this;
+    }
+
+    /**
+     * Get accountActivationCode
+     *
+     * @return string
+     */
+    public function getAccountActivationCode()
+    {
+        return $this->accountActivationCode;
     }
 }

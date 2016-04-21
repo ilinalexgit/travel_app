@@ -27,13 +27,13 @@
 
             <div class="row score" ng-show="inserted">
                 <div class="col-md-3">
-                    <input type="text" class="form-control" ng-model="inserted.username" />
+                    <input type="text" class="form-control" ng-model="inserted.username" maxlength="64" />
                 </div>
                 <div class="col-md-3">
                     <input type="text" class="form-control" ng-model="inserted.password" />
                 </div>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" ng-model="inserted.email" />
+                    <input type="text" class="form-control" ng-model="inserted.email" maxlength="64" />
                 </div>
                 <div class="col-md-2">
                     <input type="checkbox" ng-model="inserted.is_admin" />
@@ -47,7 +47,7 @@
 
             <div class="score row" ng-class-odd="'odd_row'" ng-class-even="'even_row'" ng-repeat='(key, item) in user_list.items | orderBy:order:reverse' ng-click="expand(item, myform)">
                 <div class="col-md-3">
-                    <div buttons="no" editable-text="item.username" e-form="myform" e-name="username">
+                    <div class="description_text" e-maxlength="64" buttons="no" editable-text="item.username" e-form="myform" e-name="username">
                         {{item.username}}
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 users_email">
-                    <div buttons="no" editable-text="item.email" e-form="myform" e-name="email">
+                    <div class="description_text" e-maxlength="64" buttons="no" editable-text="item.email" e-form="myform" e-name="email">
                         {{item.email}}
                     </div>
                 </div>

@@ -37,6 +37,20 @@ angular
                         handleError(data);
                     });
                 },
+                password_recovery:function(credentials, handleSuccess, handleError){
+                    return $http({
+                        url: '/api/password_recovery',
+                        method: "POST",
+                        data: $httpParamSerializerJQLike(credentials),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).success(function (data, status, headers, config) {
+                        console.log(data);
+                        handleSuccess(data);
+                    }).error(function (data, status, headers, config) {
+                        console.log(data);
+                        handleError(data);
+                    });
+                },
                 logout:function() {
                     delete $http.defaults.headers.common.Authorization;
                     localStorage.setItem("_travel_app_token", '');

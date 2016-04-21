@@ -8,6 +8,10 @@ angular
 
             $scope.error_message = null;
 
+            $scope.goToForgotPwd = function(){
+                $location.path('/password_recovery');
+            };
+
             $scope.submit = function (credentials) {
                 $scope.error_message = null;
 

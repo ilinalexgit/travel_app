@@ -2,7 +2,7 @@
 
 angular
     .module('travelApp')
-    .controller('SignupController', ['$scope', '$location', '$rootScope', 'AuthService',
+    .controller('PasswordRecoveryController', ['$scope', '$location', '$rootScope', 'AuthService',
         function ( $scope, $location, $rootScope, AuthService) {
             console.log('signup controller');
 
@@ -19,7 +19,7 @@ angular
                 $scope.success_message = null;
 
                 if($scope.form.$valid){
-                    AuthService.signup(credentials, function(date){
+                    AuthService.password_recovery(credentials, function(date){
                             $scope.success_message = 'Success';
                             $scope.busy = null;
                         },

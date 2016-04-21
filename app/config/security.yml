@@ -50,6 +50,21 @@ security:
             stateless: true
             anonymous: true
 
+        password_recovery:
+            pattern:  ^/api/password_recovery
+            stateless: true
+            anonymous: true
+
+        password_reset:
+            pattern:  ^/api/password_reset
+            stateless: true
+            anonymous: true
+
+        activate:
+            pattern:  ^/api/activate
+            stateless: true
+            anonymous: true
+
         api:
             pattern:   ^/api
             stateless: true
@@ -58,5 +73,8 @@ security:
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/password_recovery, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/password_reset, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/activate, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users, roles: ROLE_ADMIN }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }

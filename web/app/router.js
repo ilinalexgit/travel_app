@@ -85,5 +85,15 @@ angular
                 templateUrl: "templates/signup.html",
                 controller: "SignupController"
             })
+            .state('password_recovery', {
+                url: "/password_recovery",
+                resolve: {
+                    loadsignupCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                        return $ocLazyLoad.load('controllers/PasswordRecoveryCtrl.js');
+                    }]
+                },
+                templateUrl: "templates/password_recovery.html",
+                controller: "PasswordRecoveryController"
+            })
     }
 ]);

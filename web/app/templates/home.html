@@ -113,10 +113,10 @@
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <input type="text" ng-model="inserted.destination" class="form-control" />
+                    <input type="text" ng-model="inserted.destination" class="form-control" maxlength="64" />
                 </div>
                 <div class="col-md-8 col-md-offset-4 add_new_trip_textarea">
-                    <textarea ng-model="inserted.description" class="form-control" e-rows="7"></textarea>
+                    <textarea ng-model="inserted.description" class="form-control" maxlength="4096" e-rows="7"></textarea>
                 </div>
                 <div class="form_buttons pull-right">
                     <div class="btn cancel_btn" ng-click="cancel($event)">Cancel</div>
@@ -140,7 +140,7 @@
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <div editable-text="item.destination" e-form="myform" e-name="destination">
+                    <div class="description_text" editable-text="item.destination" e-form="myform" e-name="destination" e-maxlength="64">
                         {{item.destination}}
                     </div>
                 </div>
@@ -151,7 +151,7 @@
                 </div>
                 <div style="clear: both "></div>
                 <div class="col-md-8 col-md-offset-4" ng-show="myform.$visible">
-                    <div class="description_text" editable-textarea="item.description" e-form="myform" e-name="description" e-rows="7" e-cols="120">
+                    <div class="description_text" editable-textarea="item.description" e-form="myform" e-maxlength="4096" e-name="description" e-rows="7" e-cols="120">
                         {{item.description}}
                     </div>
                 </div>
