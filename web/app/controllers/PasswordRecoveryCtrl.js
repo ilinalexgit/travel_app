@@ -4,7 +4,6 @@ angular
     .module('travelApp')
     .controller('PasswordRecoveryController', ['$scope', '$location', '$rootScope', 'AuthService',
         function ( $scope, $location, $rootScope, AuthService) {
-            console.log('signup controller');
 
             $scope.error_messages = null;
             $scope.success_message = null;

@@ -6,7 +6,6 @@ angular
         function ($rootScope, $http, $httpParamSerializerJQLike) {
             return {
                 getTravels: function(params){
-                    console.log(params);
                     return $http({
                         url: '/api/trips',
                         method: "GET",

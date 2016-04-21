@@ -9,12 +9,10 @@ angular
                 url: "/",
                 resolve: {
                     loadTravels:['TravelService', 'loadHomeCtrl', function(TravelService, loadHomeCtrl){
-                        console.log('load travels relsolve');
                         return TravelService.getTravels();
                     }],
 
                     loadHomeCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                        console.log('load home controller file');
                         return $ocLazyLoad.load('controllers/HomeCtrl.js');
                     }]
                 },
@@ -46,7 +44,6 @@ angular
                     }],
 
                     loadUsers:['UserService', 'loadAdminCtrl', function(UserService, loadHomeCtrl){
-                        console.log('load users relsolve');
                         return UserService.getUsers();
                     }]
                 },

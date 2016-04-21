@@ -28,7 +28,6 @@ angular
                         }
                     };
 
-                    console.log(scope.order);
                     if (scope.order == 'diff'){
                         simpleSort();
                     }else{
@@ -37,7 +36,6 @@ angular
                             tmp_reverse = !scope.reverse
                         }
                         scope.updateMethod({'order':scope.order, 'reverse':tmp_reverse}).then(function(){
-                            console.log(999);
                             simpleSort();
                         });
                     }

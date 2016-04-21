@@ -4,15 +4,12 @@ angular
     .module('travelApp')
     .controller('ModalController', ['$scope', '$location', '$rootScope', '$uibModalInstance', 'CommonService',
         function ( $scope, $location, $rootScope, $uibModalInstance, CommonService) {
-            console.log('modal controller');
 
             var today = new Date();
             var today_month = today.getMonth();
             var today_year = today.getFullYear();
             var common_service = new CommonService();
 
-            console.log(today_month);
-            console.log(today_year);
 
             $scope.items = [];
 

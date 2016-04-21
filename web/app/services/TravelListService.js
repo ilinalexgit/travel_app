@@ -12,7 +12,6 @@ angular
             };
 
             TravelList.prototype.nextPage = function(params) {
-                console.log(88888);
                 if (this.busy) return;
                 this.busy = true;
 
@@ -59,7 +58,6 @@ angular
                     var now = new Date();
 
                     var diff_obj = this.getDiff(now, items[i].start_dt_obj);
-                    console.log(diff_obj);
                     items[i].diff = diff_obj.diffDays;
                     items[i].diff_str = diff_obj.diffStr;
 

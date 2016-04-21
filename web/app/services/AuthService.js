@@ -44,10 +44,8 @@ angular
                         data: $httpParamSerializerJQLike(credentials),
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     }).success(function (data, status, headers, config) {
-                        console.log(data);
                         handleSuccess(data);
                     }).error(function (data, status, headers, config) {
-                        console.log(data);
                         handleError(data);
                     });
                 },

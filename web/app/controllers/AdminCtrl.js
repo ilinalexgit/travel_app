@@ -4,7 +4,6 @@ angular
     .module('travelApp')
     .controller('AdminController', ['$scope', '$location', '$rootScope', 'AuthService', 'UserService', 'loadUsers', 'UserListService', 'CommonService',
         function ($scope, $location, $rootScope, AuthService, UserService, loadUsers, UserListService, CommonService) {
-            console.log('admin controller');
 
             $scope.common_service = new CommonService();
             $scope.user_list = new UserListService();
@@ -35,20 +34,6 @@ angular
 
             $scope.expand = function(item, showEl){
                 $scope.common_service.expand(item, showEl, $scope);
-                /*console.log('expand');
-                console.log(showEl);
-                if ($scope.inserted){
-                    $scope.inserted = null;
-                }
-                if ($scope.current_opened_el && $scope.current_opened != item){
-                    $scope.current_opened_el.$cancel();
-                    showEl.$show();
-                }else if($scope.current_opened != item){
-                    showEl.$show();
-                }
-
-                $scope.current_opened = item;
-                $scope.current_opened_el = showEl;*/
             };
 
             $scope.checkUsername = function(data){
@@ -85,11 +70,9 @@ angular
             ////////////////////////////////
 
             $scope.sortList = function (params){
-                console.log(555);
                 removeInserted();
                 var sort_params = prepareRequestParams(params);
                 return UserService.getUsers(sort_params).then(function(data){
-                    console.log(data.data);
                     window.scrollTo(0, 0);
                     $scope.user_list.removeItems();
                     $scope.user_list.addItems(data.data);
@@ -105,7 +88,6 @@ angular
 
             $scope.save = function(data, item, key){
                 if ($scope.inserted){
-                    console.log($scope.inserted);
                     var obj = {
                         'username': data.username,
                         'password': data.plainPassword,
@@ -114,7 +96,6 @@ angular
                     };
 
                     return UserService.createUser(obj).then(function (data){
-                        console.log($scope.inserted);
                         obj.id = data.data.user_id;
                         $scope.user_list.items.push(obj);
                         $scope.user_list.last++;
@@ -123,7 +104,6 @@ angular
                     });
 
                 }else{
-                    console.log(data);
                     var obj = {
                         'username': data.username,
                         'password': data.plainPassword,
@@ -132,7 +112,6 @@ angular
                     };
 
                     return UserService.editUser(obj, item.id).then(function (){
-                        console.log("edited");
                         $scope.current_opened = false;
                         $scope.current_opened_el = false;
                     });

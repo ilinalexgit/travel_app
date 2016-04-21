@@ -4,19 +4,16 @@ angular
     .module('travelApp')
     .controller('LoginController', ['$scope', '$location', '$rootScope', 'AuthService',
         function ($scope, $location, $rootScope, AuthService) {
-            console.log('login controller');
 
             $scope.error_message = null;
 
             $scope.goToForgotPwd = function(){
-                console.log("goto pwd recvr");
                 $location.path('/password_recovery');
             };
 
             $scope.submit = function (credentials) {
                 $scope.error_message = null;
 
-                console.log($scope.form.$valid);
                 if($scope.form.$valid){
                     AuthService.login(credentials, function(data){
                             var is_admin = AuthService.isAdmin(data.user.roles);

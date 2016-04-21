@@ -8,8 +8,6 @@ angular
             };
 
             CommonService.prototype.expand = function(item, showEl, scope) {
-                console.log('expand');
-                console.log(showEl);
                 if (scope.inserted){
                     scope.inserted = null;
                 }
