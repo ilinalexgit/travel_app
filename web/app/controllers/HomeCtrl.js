@@ -9,8 +9,6 @@ angular
             $scope.travel_list.addItems(loadTravels.data);
             $scope.common_service = new CommonService();
 
-            console.log($scope.travel_list);
-
             $scope.order = 'start_dt_obj';
             $scope.reverse = true;
 
@@ -196,7 +194,6 @@ angular
                             'date': $scope.common_service.dateFormat(data.end_dt) || 'error'
                         }
                     };
-                    console.log(obj);
                     return TravelService.createTravel(obj).then(function (data_res){
                         obj.id = data_res.data.trip_id;
                         obj.start_dt_obj = data.start_dt;
