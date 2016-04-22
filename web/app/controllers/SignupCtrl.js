@@ -4,7 +4,6 @@ angular
     .module('travelApp')
     .controller('SignupController', ['$scope', '$location', '$rootScope', 'AuthService',
         function ( $scope, $location, $rootScope, AuthService) {
-            console.log('signup controller');
 
             $scope.error_messages = null;
             $scope.success_message = null;
@@ -20,7 +19,7 @@ angular
 
                 if($scope.form.$valid){
                     AuthService.signup(credentials, function(date){
-                            $scope.success_message = 'Success';
+                            $scope.success_message = 'Registration Successful! Please check your mailbox in 5 minutes to confirm your account.';
                             $scope.busy = null;
                         },
                         function(data){
