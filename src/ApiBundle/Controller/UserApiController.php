@@ -210,7 +210,7 @@ class UserApiController extends Controller
                     );
                 $this->get('mailer')->send($message);
 
-                $message = 'We send you a new password.';
+                $message = 'We\'ve sent you a new password.';
             }
         }
 
