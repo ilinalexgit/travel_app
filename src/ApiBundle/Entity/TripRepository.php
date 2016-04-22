@@ -53,14 +53,14 @@ class TripRepository extends \Doctrine\ORM\EntityRepository
                     break;
                 case '<':
                     $qb
-                        ->andWhere('trip.start_dt < :start_dt_filter_value')
-                        ->setParameter('start_dt_filter_value', $date_filter_value);
+                        ->andWhere('trip.start_dt < :date_filter_value')
+                        ->setParameter('date_filter_value', $date_filter_value);
                     break;
                     break;
                 case '>':
                     $qb
-                        ->andWhere('trip.start_dt > :start_dt_filter_value')
-                        ->setParameter('start_dt_filter_value', $date_filter_value);
+                        ->andWhere('trip.start_dt > :date_filter_value')
+                        ->setParameter('date_filter_value', $date_filter_value);
                     break;
             }
         }

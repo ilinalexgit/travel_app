@@ -53,6 +53,16 @@ angular
                 return month[val];
             };
 
+            CommonService.prototype.dateFormat = function(date){
+                var day = date.getDate();
+                var monthIndex = date.getMonth();
+                var year = date.getFullYear();
+
+                monthIndex++;
+
+                return (year + '-' + [monthIndex] + '-' + day);
+            };
+
             return CommonService;
         }
     ]);
