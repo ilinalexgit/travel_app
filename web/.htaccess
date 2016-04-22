@@ -17,6 +17,9 @@ DirectoryIndex app.php index.html
     Options -MultiViews
 </IfModule>
 
+Header add Access-Control-Allow-Origin "*"
+Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type"
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 

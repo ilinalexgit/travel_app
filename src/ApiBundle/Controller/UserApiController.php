@@ -80,10 +80,6 @@ class UserApiController extends Controller
             $this->get('mailer')->send($message);
         }
 
-
-
-        $response->headers->set('Access-Control-Allow-Origin', 'http://swagger.io');
-        $response->headers->set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
         $response->setData($responseArr);
 
         return $response;

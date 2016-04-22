@@ -186,6 +186,7 @@ class ApiController extends Controller
         if ($dateString){
             try{
                 $obj = new \DateTime($dateString);
+                $obj->setTime(0,0,0);
                 return $obj;
             }catch (\Exception $e){
                 return 'Invalid date.';
